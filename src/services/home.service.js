@@ -33,6 +33,9 @@ const createSocialPost = (title, content) => {
 const socialPostAssessment = (id, type) => {
     return axios.post(API_URL + "/socialPost/"+ id +"/"+ type +"/assess", {}, {headers: {Authorization: "Bearer " + localStorage.getItem("userToken")}})
 }
+const getSocialPostImage = (id) => {
+    return axios.get(API_URL + "/socialPost/"+ id +"/image", {headers: {Authorization: "Bearer " + localStorage.getItem("userToken")}, responseType: "blob"});
+}
 
 const homeService = {
     getUserFriends,
@@ -41,7 +44,8 @@ const homeService = {
     rejectFriendsInvitation,
     getSocialPost,
     createSocialPost,
-    socialPostAssessment
+    socialPostAssessment,
+    getSocialPostImage
 };
 
 export default homeService;
