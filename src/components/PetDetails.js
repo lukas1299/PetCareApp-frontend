@@ -124,13 +124,10 @@ const PetDetails = () => {
         } catch (err) {
             console.log(err);
         }
-        
     }
 
     useEffect(() => {
         getEventsCalendar(petId);
-
-        
 
     }, []);
 

@@ -7,6 +7,7 @@ import Modal from "react-bootstrap/Modal";
 import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
 import AnimalCard from "./AnimalCard";
+import navbarService from "./navbar.service";
 
 const Pets = ({ navigation }) => {
   const [animals, setAnimals] = useState([]);
@@ -18,8 +19,23 @@ const Pets = ({ navigation }) => {
   const [name, setName] = useState("");
   const [weight, setWeight] = useState();
   const [age, setAge] = useState();
+  const [image, setImage] = useState([]);
+
+  var binaryData = [];
   var animalType = "SHAGGY";
   var gender = "MALE";
+
+  const loadAvatar = () => {
+    navbarService.getUserImage().then(
+      (response) => {
+        console.log(response.data);
+        setImage(response.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
 
   const handleAnimalType = (selectedAnimalType) => {
     animalType = selectedAnimalType;
@@ -58,7 +74,10 @@ const Pets = ({ navigation }) => {
 
   useEffect(() => {
     getAllUserAnimals();
+    loadAvatar();
   }, []);
+
+  binaryData.push(image);
 
   return (
     <div
@@ -70,7 +89,7 @@ const Pets = ({ navigation }) => {
       }}
       className="Auth-form-container"
     >
-      <NavbarComponent />
+      <NavbarComponent image={binaryData} />
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header>
@@ -216,8 +235,9 @@ const Pets = ({ navigation }) => {
           </div>
           <div style={{ margin: "1%", float: "left", minHeight: "800px" }}>
             {animals.map((animal, index) => {
-              
-              return <AnimalCard index={index} id={animal.id} name={animal.name} />;
+              return (
+                <AnimalCard index={index} id={animal.id} name={animal.name} />
+              );
             })}
           </div>
           <div

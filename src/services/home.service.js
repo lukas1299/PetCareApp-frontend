@@ -26,8 +26,8 @@ const getSocialPost = () => {
     return axios.get(API_URL + "/socialPost/friends/all", {headers: {Authorization: "Bearer " + localStorage.getItem("userToken")}});
 }
 
-const createSocialPost = (title, content) => {
-    return axios.post(API_URL + "/socialPost/add", {title, content}, {headers: {Authorization: "Bearer " + localStorage.getItem("userToken")}})
+const createSocialPost = (title, content, postImage) => {
+    return axios.post(API_URL + "/socialPost/add", {json:'{ "title":"Tytuł 2", "content":"' + content +'"}', file: postImage}, {headers: {Authorization: "Bearer " + localStorage.getItem("userToken"), 'Content-Type': 'multipart/form-data'}})
 }
 
 const socialPostAssessment = (id, type) => {
