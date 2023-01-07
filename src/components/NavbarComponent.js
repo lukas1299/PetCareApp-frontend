@@ -26,7 +26,7 @@ const NavbarComponent = (props) => {
             <Nav.Link href="/home">Home</Nav.Link>
             <Nav.Link href="/pets">Pets</Nav.Link>
             <Nav.Link href="/forum">Forum</Nav.Link>
-            <Nav.Link href="/collection">Collections</Nav.Link>
+            <Nav.Link href="/collections">Collections</Nav.Link>
           </Nav>
           <Nav>
             <Nav.Link>

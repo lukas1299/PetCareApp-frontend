@@ -36,6 +36,17 @@ const socialPostAssessment = (id, type) => {
 const getSocialPostImage = (id) => {
     return axios.get(API_URL + "/socialPost/"+ id +"/image", {headers: {Authorization: "Bearer " + localStorage.getItem("userToken")}, responseType: "blob"});
 }
+const getUpcomingEvents = () => {
+    return axios.get(API_URL + "/events/animals/all", {headers: {Authorization: "Bearer " + localStorage.getItem("userToken")}});
+}
+
+const getSocialPostComments = (id) => {
+    return axios.get(API_URL + "/comments/" + id + "/get", {headers: {Authorization: "Bearer " + localStorage.getItem("userToken")}});
+}
+const createSocialPostComment = (id, content) => {
+    return axios.post(API_URL + "/comments/"+ id +"/add", {content}, {headers: {Authorization: "Bearer " + localStorage.getItem("userToken")}});
+}
+
 
 const homeService = {
     getUserFriends,
@@ -45,7 +56,10 @@ const homeService = {
     getSocialPost,
     createSocialPost,
     socialPostAssessment,
-    getSocialPostImage
+    getSocialPostImage,
+    getUpcomingEvents,
+    getSocialPostComments,
+    createSocialPostComment
 };
 
 export default homeService;

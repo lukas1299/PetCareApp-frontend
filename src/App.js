@@ -11,6 +11,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from "bootstrap";
 import Invitation from "./components/Invitation";
 import PetDetails from "./components/PetDetails";
+import Friends from "./components/Friends";
+import Achievements from "./components/Achievements";
+import Collections from "./components/Collections";
 
 
 function App() {
@@ -26,7 +29,10 @@ function App() {
           <Route path='/petDetails' element={<PetDetails />}></Route>
           <Route path="/forum" element={<Forum />}></Route>
           <Route path="/forumDetails" element={<ForumDetails />}></Route>
-          <Route path="/invitation" element={<Invitation />}></Route>
+          <Route path="/invitations" element={<Invitation />}></Route>
+          <Route path="/friends" element={<Friends />}></Route>
+          <Route path="/achievements" element={<Achievements />}></Route>
+          <Route path="/collections" element={<Collections />}></Route>
         </Routes>
       </div>
     </div>

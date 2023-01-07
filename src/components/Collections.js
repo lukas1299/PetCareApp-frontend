@@ -9,7 +9,7 @@ import Form from "react-bootstrap/Form";
 import AnimalCard from "./AnimalCard";
 import navbarService from "./navbar.service";
 
-const Pets = () => {
+const Collections = () => {
   const [animals, setAnimals] = useState([]);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -408,4 +408,4 @@ const Pets = () => {
   );
 };
 
-export default Pets;
+export default Collections;

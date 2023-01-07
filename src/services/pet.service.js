@@ -12,18 +12,12 @@ const getUserAnimals = () => {
     });
 };
 
-const createAnimal = (name, animalType, age, weight, gender) => {
+const createAnimal = (name, animalType, age, weight, gender, animalImage) => {
   return axios.post(
     API_URL + "/animals/add",
+    {json:'{ "name":"' + name +'", "animalType":"' + animalType +'", "age":"'+ age +'", "weight":"'+ weight +'", "gender":"'+ gender +'"}', file: animalImage},
     {
-      name,
-      animalType,
-      age,
-      weight,
-      gender,
-    },
-    {
-      headers: { Authorization: "Bearer " + localStorage.getItem("userToken") },
+      headers: { Authorization: "Bearer " + localStorage.getItem("userToken"), 'Content-Type': 'multipart/form-data' },
     }
   );
 };
@@ -61,6 +55,12 @@ const deleteEvent = (name, animalId) => {
   });
 };
 
+const deleteAnimal = (animalId) => {
+  return axios.delete(API_URL + "/animals/"+ animalId +"/delete", {
+    headers: { Authorization: "Bearer " + localStorage.getItem("userToken") }
+  });
+}
+
 const getImage = (id) => {
   return axios.get(API_URL + "/animals/" + id + "/image", {
     headers: { Authorization: "Bearer " + localStorage.getItem("userToken") },
@@ -76,6 +76,7 @@ const petService = {
   createEvent,
   deleteEvent,
   getImage,
+  deleteAnimal
 };
 
 export default petService;
