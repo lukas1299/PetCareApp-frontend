@@ -2,15 +2,25 @@ import React, { useEffect, useState } from "react";
 import NavbarComponent from "./NavbarComponent";
 import petService from "../services/pet.service";
 import Button from "react-bootstrap/Button";
-import { BiPlus, BiSearchAlt, BiBookmarkPlus, BiLinkAlt } from "react-icons/bi";
+import {
+  BiPlus,
+  BiSearchAlt,
+  BiBookmarkPlus,
+  BiLinkAlt,
+  BiInfoCircle,
+} from "react-icons/bi";
 import Modal from "react-bootstrap/Modal";
 import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
-import AnimalCard from "./AnimalCard";
 import navbarService from "./navbar.service";
+import Card from "react-bootstrap/Card";
+import { useNavigate } from "react-router-dom";
+import Alert from "react-bootstrap/Alert";
+import { ToastContainer, toast } from "react-toastify";
 
 const Pets = () => {
   const [animals, setAnimals] = useState([]);
+  const [breeds, setBreeds] = useState([]);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -24,16 +34,33 @@ const Pets = () => {
   const [ageError, setAgeError] = useState("");
   const [fileError, setFileError] = useState("");
 
+  const [searchValue, setSearchValue] = useState("");
+  const [searchResult, setSearchResult] = useState();
+
+  const navigate = useNavigate();
+
   var binaryData = [];
-  var animalType = "OTHER";
+  var animalType = "no breed";
   var gender = "MALE";
   var animalImage;
+
+  const petNotFoundNotify = () => toast.error("Pet not found.");
 
   const loadAvatar = () => {
     navbarService.getUserImage().then(
       (response) => {
-        console.log(response.data);
         setImage(response.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
+
+  const deleteAnimal = (id) => {
+    petService.deleteAnimal(id).then(
+      () => {
+        window.location.reload(true);
       },
       (error) => {
         console.log(error);
@@ -104,12 +131,23 @@ const Pets = () => {
     );
   };
 
+  const getBreeds = () => {
+    petService.getBreeds().then(
+      (response) => {
+        console.log(response.data);
+        setBreeds(response.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
+
   function validateName(name) {
     if (name.length === 0) {
       setNameError("The name cannot be empty.");
       return false;
-    }
-    if (name.length < 1 || name.length > 15) {
+    } else if (name.length < 1 || name.length > 15) {
       setNameError("Inappropriate length.");
       return false;
     } else if (name.match(/[^a-zA-Z]/)) {
@@ -153,17 +191,121 @@ const Pets = () => {
     return true;
   }
 
-  useEffect(() => {
-    getAllUserAnimals();
-    loadAvatar();
-  }, []);
+  const handleSearch = async () => {
+    var foundAnimals;
+    if (searchValue === "") {
+      foundAnimals = await petService.findAnimalsByName("emptySearchBar");
+    } else {
+      foundAnimals = await petService.findAnimalsByName(searchValue);
+    }
+
+    if (foundAnimals.data.length === 0) {
+      setSearchResult(
+        <div
+          style={{
+            backgroundColor: "#e1e5eb",
+            width: "80%",
+            height: "auto",
+            minHeight: "100px",
+            marginLeft: "auto",
+            marginBottom: "20px",
+            marginRight: "auto",
+            boxShadow:
+              " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+          }}
+        ></div>
+      );
+    }
+    if (foundAnimals.data.length > 0) {
+      setSearchResult(
+        <div
+          style={{
+            backgroundColor: "#e1e5eb",
+            width: "80%",
+            overflow: "hidden",
+            minHeight: "450px",
+            marginBottom: "20px",
+            marginLeft: "auto",
+            marginRight: "auto",
+            boxShadow:
+              " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+          }}
+        >
+          {foundAnimals.data.slice(0, 5).map((animal, index) => {
+            return (
+              <Card
+                key={index}
+                style={{
+                  width: "14.5%",
+                  height: "auto",
+                  minWidth: "18%",
+                  float: "left",
+                  position: "revert",
+                  margin: "1%",
+                }}
+              >
+                <Card.Img
+                  variant="top"
+                  style={{ height: "10%" }}
+                  src={"data:image/png;base64," + animal.photo}
+                />
+                <Card.Body>
+                  <Card.Title>{animal.name}</Card.Title>
+                  <Card.Text>
+                    <a>Age: </a>
+                    <strong>{animal.age}</strong>
+                    <br></br>
+                    <a>Weight: </a>
+                    <strong>{animal.weight}</strong>
+                  </Card.Text>
+                  <div style={{ alignSelf: "flex-end", height: "50px" }}>
+                    <BiInfoCircle
+                      style={{
+                        width: "35px",
+                        height: "20px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        navigate("/petDetails", {
+                          state: { petId: animal.id,
+                              petImage: animal.photo,
+                              animal: animal,
+                              animalBreed : animal.animalBreed },
+                        });
+                      }}
+                    />
+                    <Button
+                      style={{ float: "right" }}
+                      variant="danger"
+                      onClick={() => deleteAnimal(animal.id)}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                </Card.Body>
+              </Card>
+            );
+          })}
+        </div>
+      );
+    } else {
+      setSearchResult();
+      petNotFoundNotify();
+    }
+  };
 
   binaryData.push(image);
+
+  useEffect(() => {
+    loadAvatar();
+    getAllUserAnimals();
+    getBreeds();
+  }, []);
 
   return (
     <div
       style={{
-        backgroundColor: "#787271",
+        backgroundColor: "white",
         width: "100%",
         minHeight: "950px",
         overflow: "hidden",
@@ -172,6 +314,167 @@ const Pets = () => {
     >
       <NavbarComponent image={binaryData} />
 
+      <div>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            float: "left",
+            marginTop: "100px",
+            position: "initial",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#e1e5eb",
+              marginBottom: "30px",
+              width: "80%",
+              height: "100px",
+              marginLeft: "auto",
+              marginRight: "auto",
+              boxShadow:
+                " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+            }}
+          >
+            <div style={{ marginLeft: "20px" }}>
+              <BiSearchAlt
+                style={{
+                  float: "left",
+                  width: "30px",
+                  height: "30px",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginTop: "35px",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleSearch()}
+              />
+
+              <Form.Control
+                type="text"
+                placeholder="Search..."
+                style={{
+                  float: "left",
+                  width: "60%",
+                  marginTop: "30px",
+                  marginLeft: "2%",
+                }}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+              <Button
+                variant="success"
+                style={{
+                  marginTop: "30px",
+                  marginLeft: "13%",
+                  width: "10%",
+                }}
+                onClick={handleShow}
+              >
+                <BiPlus />
+              </Button>
+            </div>
+          </div>
+          {searchResult}
+          <div
+            style={{
+              width: "80%",
+              overflow: "auto",
+              marginTop: "1%",
+              margin: "auto",
+              position: "initial",
+              minHeight: "3000px",
+              backgroundColor: "#e1e5eb",
+              boxShadow:
+                " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+            }}
+          >
+            {animals.map((animal, index) => {
+              return (
+                <Card
+                  key={index}
+                  style={{
+                    width: "14.5%",
+                    height: "auto",
+                    minWidth: "18%",
+                    float: "left",
+                    position: "revert",
+                    margin: "1%",
+                  }}
+                >
+                  <Card.Img
+                    variant="top"
+                    style={{ height: "10%" }}
+                    src={"data:image/png;base64," + animal.photo}
+                  />
+                  <Card.Body>
+                    <Card.Title>{animal.name}</Card.Title>
+                    <Card.Text>
+                      <a>Age: </a>
+                      <strong>{animal.age}</strong>
+                      <br></br>
+                      <a>Weight: </a>
+                      <strong>{animal.weight}</strong>
+                    </Card.Text>
+                    <div style={{ alignSelf: "flex-end", height: "50px" }}>
+                      <BiInfoCircle
+                        style={{
+                          width: "35px",
+                          height: "20px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          navigate("/petDetails", {
+                            state: {
+                              petId: animal.id,
+                              petImage: animal.photo,
+                              animal: animal,
+                              animalBreed : animal.animalBreed
+                            },
+                          });
+                        }}
+                      />
+                      <Button
+                        style={{ float: "right" }}
+                        variant="danger"
+                        onClick={() => deleteAnimal(animal.id)}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              );
+            })}
+          </div>
+          <br />
+          <div
+            style={{
+              width: "100%",
+              height: "auto",
+              backgroundColor: "#212529",
+              float: "left",
+              bottom: "0",
+            }}
+          >
+            <hr
+              style={{
+                color: "white",
+                backgroundColor: "white",
+                height: 0.5,
+                borderColor: "white",
+                width: "90%",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            />
+            <p
+              style={{ color: "white", textAlign: "center", fontSize: "12px" }}
+            >
+              &copy; Copyright Pets 2022, Inc. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
@@ -193,11 +496,7 @@ const Pets = () => {
                   aria-describedby="basic-addon1"
                 ></input>
               </div>
-              {nameError && (
-                <p style={{ color: "red", fontSize: "14px", margin: "1px" }}>
-                  {nameError}
-                </p>
-              )}
+              {nameError && <Alert variant="danger">{nameError}</Alert>}
               <div className="input-group mb-3">
                 <input
                   onChange={(e) => setWeight(e.target.value)}
@@ -210,11 +509,7 @@ const Pets = () => {
                   aria-describedby="basic-addon1"
                 ></input>
               </div>
-              {weightError && (
-                <p style={{ color: "red", fontSize: "14px", margin: "1px" }}>
-                  {weightError}
-                </p>
-              )}
+              {weightError && <Alert variant="danger">{weightError}</Alert>}
               <div className="input-group mb-3">
                 <input
                   onChange={(e) => setAge(e.target.value)}
@@ -227,11 +522,7 @@ const Pets = () => {
                   aria-describedby="basic-addon1"
                 ></input>
               </div>
-              {ageError && (
-                <p style={{ color: "red", fontSize: "14px", margin: "1px" }}>
-                  {ageError}
-                </p>
-              )}
+              {ageError && <Alert variant="danger">{ageError}</Alert>}
               <Form.Group className="mb-3">
                 <Dropdown onSelect={handleAnimalType}>
                   <Dropdown.Toggle
@@ -243,12 +534,15 @@ const Pets = () => {
                       animalType.toLowerCase().slice(1)}
                   </Dropdown.Toggle>
                   <Dropdown.Menu style={{ width: "100%" }}>
-                    <Dropdown.Item eventKey="OTHER">Other</Dropdown.Item>
-                    <Dropdown.Item eventKey="DOGS">Dogs</Dropdown.Item>
-                    <Dropdown.Item eventKey="CATS">Cats</Dropdown.Item>
-                    <Dropdown.Item eventKey="BIRDS">Birds</Dropdown.Item>
-                    <Dropdown.Item eventKey="FISH">Fish</Dropdown.Item>
-                    <Dropdown.Item eventKey="REPTILES">Reptiles</Dropdown.Item>
+                    {breeds.map((breed, index) => {
+                      return (
+                        <div key={index}>
+                          <Dropdown.Item eventKey={breed.name}>
+                            {breed.name}
+                          </Dropdown.Item>
+                        </div>
+                      );
+                    })}
                   </Dropdown.Menu>
                 </Dropdown>
 
@@ -287,12 +581,7 @@ const Pets = () => {
                   onClick={() => fileHandler()}
                 />
               </Form.Text>
-              {fileError && (
-                <p style={{ color: "red", fontSize: "14px", margin: "1px" }}>
-                  {fileError}
-                </p>
-              )}
-
+              {fileError && <Alert variant="danger">{fileError}</Alert>}
               <Button
                 variant="success"
                 onClick={() => handleAnimalCreation()}
@@ -305,105 +594,7 @@ const Pets = () => {
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>
-
-      <div>
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            float: "left",
-            marginTop: "100px",
-            position: "initial",
-          }}
-        >
-           <div
-            style={{
-              backgroundColor: "#e1e5eb",
-              marginBottom:"30px",
-              width: "80%",
-              height: "100px",
-              marginLeft: "auto",
-              marginRight: "auto",
-              
-              boxShadow: " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)"
-            }}
-          >
-            <div style={{ marginLeft: "20px" }}>
-              <BiSearchAlt
-                style={{
-                  float: "left",
-                  width: "30px",
-                  height: "30px",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginTop: "35px",
-                }}
-              />
-
-              <Form.Control
-                type="text"
-                placeholder="Search..."
-                style={{
-                  float: "left",
-                  width: "70%",
-                  marginTop: "30px",
-                  marginLeft: "2%",
-                }}
-              />
-              <Button
-                variant="success"
-                style={{
-                  float: "right",
-                  marginRight: "30px",
-                  marginTop: "30px",
-                }}
-                onClick={handleShow}
-              >
-                <BiPlus /> Create animal
-              </Button>
-            </div>
-          </div>
-          <div style={{display:"block", borderBottom:"0.5px solid #9E9E9E", marginBottom:"5px", marginTop:"10px",  width: "90%", marginLeft: "auto", marginRight: "auto"}}></div>
-          <div style={{ margin: "1%", float: "left", minHeight: "800px" }}>
-            {animals.map((animal, index) => {
-              console.log(animal);
-              return (
-                <AnimalCard
-                  index={index}
-                  id={animal.id}
-                  name={animal.name}
-                  age={animal.age}
-                  weight={animal.weight}
-                />
-              );
-            })}
-          </div>
-          <div
-            style={{
-              width: "100%",
-              height: "100px",
-              backgroundColor: "#212529",
-              float: "left",
-              bottom: "0",
-            }}
-          >
-            <hr
-              style={{
-                color: "white",
-                backgroundColor: "white",
-                height: 0.5,
-                borderColor: "white",
-                width: "90%",
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-            />
-            <p style={{ color: "white", textAlign: "center" }}>
-              &copy; Copyright Pets 2022, Inc. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </div>
+      <ToastContainer />
     </div>
   );
 };

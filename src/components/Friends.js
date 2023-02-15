@@ -1,24 +1,47 @@
 import React, { useEffect, useState } from "react";
 import NavbarComponent from "./NavbarComponent";
+import { BiSearchAlt } from "react-icons/bi";
 import Button from "react-bootstrap/Button";
 import navbarService from "./navbar.service";
 import homeService from "../services/home.service";
 import friendService from "../services/friend.service";
+import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Friends = () => {
   const [invitations, setInvitations] = useState([]);
+  const [friends, setFriends] = useState([]);
   const [nonFrinds, setNonFriends] = useState([]);
 
   const [image, setImage] = useState([]);
+
+  const [searchValue, setSearchValue] = useState("");
+  const [searchResult, setSearchResult] = useState();
+  const navigate = useNavigate();
+
+  const inviteCurrentExistNotify = () => toast.error("Invitation is currently exist");
+  const inviteSentSuccessfully = () => toast.success("Invitation sent successfully");
+  const friendsNotFoundNotify = () => toast.error("Friend not found.");
 
   var binaryData = [];
 
   const loadAvatar = () => {
     navbarService.getUserImage().then(
       (response) => {
-        console.log(response.data);
         setImage(response.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
+
+  const getFriends = () => {
+    friendService.getUserAllFriends().then(
+      (response) => {
+        setFriends(response.data);
       },
       (error) => {
         console.log(error);
@@ -29,7 +52,6 @@ const Friends = () => {
   const getNonFriends = () => {
     friendService.getNonFriendUsers().then(
       (response) => {
-        console.log(response.data);
         setNonFriends(response.data);
       },
       (error) => {
@@ -42,6 +64,7 @@ const Friends = () => {
     homeService.acceptFriendsInvitation(id).then(
       () => {
         getInvitation();
+        getFriends();
         getNonFriends();
       },
       (error) => {
@@ -74,11 +97,10 @@ const Friends = () => {
     );
   };
 
-  const sendInvitation = (name) => {
-    friendService.sendInvitations(name).then(
-      (response) => {
-        console.log(response.data);
-        getInvitation();
+  const removeFriend = (id) => {
+    friendService.removeUserFromFriends(id).then(
+      () => {
+        getFriends();
         getNonFriends();
       },
       (error) => {
@@ -87,8 +109,111 @@ const Friends = () => {
     );
   };
 
+  const sendInvitation = (name) => {
+    friendService.sendInvitations(name).then(
+      () => {
+        inviteSentSuccessfully();
+        getInvitation();
+        getNonFriends();
+      },
+      (error) => {
+        if (error.response.status) {
+          inviteCurrentExistNotify();
+        }
+      }
+    );
+  };
+
+  const showFriendProfile = (people) => {
+    navigate("/userPanel", { state: { user: people } });
+  };
+
+  const handleSearch = async () => {
+    var foundPeople;
+    if (searchValue === "") {
+      foundPeople = await friendService.findPeopleByName("emptySearchBar");
+    } else {
+      foundPeople = await friendService.findPeopleByName(searchValue);
+    }
+    if (foundPeople.data.length === 0) {
+      setSearchResult(
+        <div
+          style={{
+            backgroundColor: "#e1e5eb",
+            width: "80%",
+            height: "auto",
+            minHeight: "100px",
+            marginLeft: "auto",
+            marginBottom: "20px",
+            marginRight: "auto",
+            boxShadow:
+              " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+          }}
+        ></div>
+      );
+    }
+    if (foundPeople.data.length > 0) {
+      setSearchResult(
+        <div
+          style={{
+            backgroundColor: "#e1e5eb",
+            width: "80%",
+            height: "auto",
+            minHeight: "400px",
+            marginBottom: "20px",
+            marginLeft: "auto",
+            marginRight: "auto",
+            boxShadow:
+              " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+          }}
+        >
+          {foundPeople.data.slice(0, 5).map((people, index) => {
+            return (
+              <Card
+                style={{
+                  width: "14.5%",
+                  height: "auto",
+                  minWidth: "18%",
+                  float: "left",
+                  position: "revert",
+                  margin: "1%",
+                  cursor: "pointer",
+                }}
+                key={index}
+                onClick={() => showFriendProfile(people)}
+              >
+                <Card.Img
+                  variant="top"
+                  src={"data:image/png;base64," + people.photo}
+                  style={{ height: "10%" }}
+                />
+                <Card.Body>
+                  <Card.Title></Card.Title>
+                  <Card.Text>
+                    <a style={{ fontSize: "14px" }}>
+                      Name: <strong>{people.username}</strong>
+                    </a>
+
+                    <br></br>
+                    <a style={{ fontSize: "14px" }}>
+                      Email: <strong>{people.email}</strong>
+                    </a>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            );
+          })}
+        </div>
+      );
+    } else {
+      setSearchResult();
+      friendsNotFoundNotify();
+    }
+  };
+
   useEffect(() => {
     getInvitation();
+    getFriends();
     getNonFriends();
     loadAvatar();
   }, []);
@@ -97,7 +222,7 @@ const Friends = () => {
   return (
     <div
       style={{
-        backgroundColor: "#3A3B3C",
+        backgroundColor: "white",
         width: "100%",
         minHeight: "950px",
         overflow: "hidden",
@@ -116,141 +241,285 @@ const Friends = () => {
             position: "initial",
           }}
         >
-          <h3 style={{ margin: "1%", color: "white" }}>Invitations</h3>
-          <hr
+          <div
             style={{
-              color: "white",
-              backgroundColor: "white",
-              height: 0.5,
-              borderColor: "white",
-              width: "90%",
+              backgroundColor: "#e1e5eb",
+              marginBottom: "30px",
+              width: "80%",
+              height: "100px",
               marginLeft: "auto",
               marginRight: "auto",
+
+              boxShadow:
+                " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
             }}
-          />
+          >
+            <div style={{ marginLeft: "20px" }}>
+              <BiSearchAlt
+                style={{
+                  float: "left",
+                  width: "30px",
+                  height: "30px",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginTop: "35px",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleSearch()}
+              />
 
-          <div style={{ marginLeft: "1%", minHeight: "600px" }}>
-            {invitations.map((invitation, index) => {
-              return (
-                <Card
-                  style={{
-                    width: "14.5%",
-                    minWidth: "160px",
-                    minHeight: "200px",
-                    float: "left",
-                    position: "revert",
-                    cursor: "pointer",
-                    margin: "1%",
-                  }}
-                  key={index}
-                >
-                  <Card.Img
-                    variant="top"
-                    src={"data:image/png;base64," + invitation.profile.user.photo}
-                    style={{ height: "200px" }}
-                  />
-                  <Card.Body>
-                    <Card.Title></Card.Title>
-                    <Card.Text>
-                      <a>Name: </a>
-                      <strong>{invitation.profile.user.username}</strong>
-                      <br></br>
-                      <a>Email: </a>
-                      <strong>{invitation.profile.user.email}</strong>
-                    </Card.Text>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <Button
-                        style={{ width: "50%" }}
-                        variant="success"
-                        onClick={() => acceptInvitation(invitation.id)}
-                      >
-                        Accept
-                      </Button>
-                      <Button
-                        style={{ width: "50%", marginLeft: "5%" }}
-                        variant="danger"
-                        onClick={() => rejectInvitation(invitation.id)}
-                      >
-                        Reject
-                      </Button>
-                    </div>
-                  </Card.Body>
-                </Card>
-              );
-            })}
+              <Form.Control
+                type="text"
+                placeholder="Search..."
+                style={{
+                  float: "left",
+                  width: "40%",
+                  marginTop: "30px",
+                  marginLeft: "2%",
+                }}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+            </div>
           </div>
+          {searchResult}
 
-          <div>
-            <h3 style={{ clear: "both", marginLeft: "1%", color: "white" }}>
-              Other people
-            </h3>
-            <hr
+          <div
+            style={{
+              width: "80%",
+              overflow: "auto",
+              marginTop: "1%",
+              margin: "auto",
+              position: "initial",
+              minHeight: "3000px",
+              backgroundColor: "#e1e5eb",
+              boxShadow:
+                " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+            }}
+          >
+            <br></br>
+            <h5
               style={{
-                color: "white",
-                backgroundColor: "white",
-                height: 0.5,
-                borderColor: "white",
+                fontFamily: " Arial, Helvetica, sans-serif",
+                marginLeft: "5%",
+              }}
+            >
+              Invitations
+            </h5>
+            <div
+              style={{
+                display: "block",
+                borderBottom: "0.5px solid #9E9E9E",
+                marginBottom: "5px",
+                marginTop: "10px",
                 width: "90%",
                 marginLeft: "auto",
                 marginRight: "auto",
               }}
-            />
+            ></div>
 
-            <div style={{ marginLeft: "1%", minHeight: "800px" }}>
-              {nonFrinds.map((people, index) => {
-                console.log(people);
-
+            <div style={{ marginLeft: "4%" }}>
+              {invitations.map((invitation, index) => {
                 return (
                   <Card
                     style={{
                       width: "14.5%",
-                      minWidth: "160px",
-                      minHeight: "200px",
+                      height: "auto",
+                      minWidth: "18%",
                       float: "left",
                       position: "revert",
-                      cursor: "pointer",
                       margin: "1%",
                     }}
                     key={index}
+                   
                   >
                     <Card.Img
                       variant="top"
-                      src={"data:image/png;base64," + people.photo}
-                      style={{ height: "200px" }}
+                      src={
+                        "data:image/png;base64," + invitation.profile.user.photo
+                      }
+                      style={{ height: "10%", cursor:"pointer" }}
+                      onClick={() => showFriendProfile(invitation.profile.user)}
                     />
                     <Card.Body>
                       <Card.Title></Card.Title>
                       <Card.Text>
                         <a>Name: </a>
-                        <strong>{people.username}</strong>
+                        <strong>{invitation.profile.user.username}</strong>
                         <br></br>
                         <a>Email: </a>
-                        <strong>{people.email}</strong>
+                        <strong>{invitation.profile.user.email}</strong>
                       </Card.Text>
-                      <Button
-                        style={{ float: "right" }}
-                        variant="primary"
-                        onClick={() => sendInvitation(people.username)}
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          flexDirection: "row",
+                        }}
                       >
-                        Invite
-                      </Button>
+                        <Button
+                          style={{ width: "50%" }}
+                          variant="success"
+                          onClick={() => acceptInvitation(invitation.id)}
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          style={{ width: "50%", marginLeft: "5%" }}
+                          variant="danger"
+                          onClick={() => rejectInvitation(invitation.id)}
+                        >
+                          Reject
+                        </Button>
+                      </div>
                     </Card.Body>
                   </Card>
                 );
               })}
             </div>
-          </div>
+            <div style={{ clear: "both", height: "50px" }}></div>
 
+            <div style={{ clear: "both" }}>
+              <h5
+                style={{
+                  fontFamily: " Arial, Helvetica, sans-serif",
+                  marginLeft: "5%",
+                }}
+              >
+                Friends
+              </h5>
+              <div
+                style={{
+                  display: "block",
+                  borderBottom: "0.5px solid #9E9E9E",
+                  marginBottom: "5px",
+                  marginTop: "10px",
+                  width: "90%",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              ></div>
+
+              <div style={{ marginLeft: "4%" }}>
+                {friends.map((people, index) => {
+                  return (
+                    <Card
+                      key={index}
+                      style={{
+                        width: "14.5%",
+                        height: "auto",
+                        minWidth: "18%",
+                        float: "left",
+                        position: "revert",
+                        margin: "1%",
+                      }}
+                      
+                    >
+                      <Card.Img
+                        variant="top"
+                        src={"data:image/png;base64," + people.photo}
+                        style={{ height: "10%", cursor:"pointer" }}
+                        onClick={() => showFriendProfile(people)}
+                      />
+                      <Card.Body>
+                        <Card.Title></Card.Title>
+                        <Card.Text>
+                          <a style={{ fontSize: "14px" }}>
+                            Name: <strong>{people.username}</strong>
+                          </a>
+
+                          <br></br>
+                          <a style={{ fontSize: "14px" }}>
+                            Email: <strong>{people.email}</strong>
+                          </a>
+                        </Card.Text>
+                        <Button
+                          style={{ width: "100%" }}
+                          variant="light"
+                          onClick={() => removeFriend(people.id)}
+                        >
+                          Remove
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
+            <div style={{ clear: "both", height: "50px" }}></div>
+            <div style={{ clear: "both" }}>
+              <h5
+                style={{
+                  fontFamily: " Arial, Helvetica, sans-serif",
+                  marginLeft: "5%",
+                }}
+              >
+                Other people
+              </h5>
+              <div
+                style={{
+                  display: "block",
+                  borderBottom: "0.5px solid #9E9E9E",
+                  marginBottom: "5px",
+                  marginTop: "10px",
+                  width: "90%",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              ></div>
+
+              <div style={{ marginLeft: "4%" }}>
+                {nonFrinds.map((people, index) => {
+                  console.log(people);
+
+                  return (
+                    <Card
+                      style={{
+                        width: "14.5%",
+                        height: "auto",
+                        minWidth: "18%",
+                        float: "left",
+                        position: "revert",
+                        margin: "1%",
+                      }}
+                      key={index}
+                    >
+                      <Card.Img
+                        variant="top"
+                        src={"data:image/png;base64," + people.photo}
+                        style={{ height: "10%", cursor:"pointer" }}
+                        onClick={() => showFriendProfile(people)}
+                      />
+                      <Card.Body>
+                        <Card.Title></Card.Title>
+                        <Card.Text>
+                          <a style={{ fontSize: "14px" }}>
+                            Name: <strong>{people.username}</strong>
+                          </a>
+
+                          <br></br>
+                          <a style={{ fontSize: "14px" }}>
+                            Email: <strong>{people.email}</strong>
+                          </a>
+                        </Card.Text>
+                        <Button
+                          style={{ width: "100%" }}
+                          variant="light"
+                          onClick={() => sendInvitation(people.username)}
+                        >
+                          Invite
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+          <br></br>
           <div
             style={{
               width: "100%",
-              height: "100px",
+              height: "auto",
               backgroundColor: "#212529",
               float: "left",
               bottom: "0",
@@ -267,12 +536,15 @@ const Friends = () => {
                 marginRight: "auto",
               }}
             />
-            <p style={{ color: "white", textAlign: "center" }}>
+            <p
+              style={{ color: "white", textAlign: "center", fontSize: "12px" }}
+            >
               &copy; Copyright Pets 2022, Inc. All rights reserved.
             </p>
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

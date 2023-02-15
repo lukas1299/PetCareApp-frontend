@@ -27,12 +27,25 @@ const getUserImage = (id) => {
     return axios.get(API_URL + "/users/"+ id +"/image", {headers: {Authorization: "Bearer " + localStorage.getItem("userToken")}, responseType: "blob"});
 }
 
+const removeUserFromFriends = (id) => {
+    return axios.delete(API_URL + "/friends/" + id + "/removeFriend",
+    {headers: {Authorization: "Bearer " + localStorage.getItem("userToken")}})
+}
+
+const findPeopleByName = (name) => {
+    return axios.get(API_URL + "/users/" + name + "/find", {
+    headers: { Authorization: "Bearer " + localStorage.getItem("userToken") },
+  });
+}
+
 const friendService = {
     getUserAllFriends,
     getNonFriendUsers,
     sendInvitations,
     removeFriend,
-    getUserImage
+    getUserImage,
+    removeUserFromFriends,
+    findPeopleByName
 };
 
 export default friendService;
