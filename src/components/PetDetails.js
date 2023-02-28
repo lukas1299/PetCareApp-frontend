@@ -93,17 +93,18 @@ const PetDetails = () => {
   const [isVaccination, setIsVaccination] = useState(false);
   const [vaccinations, setVaccinations] = useState([]);
 
-  var animalType = "no breed";
-  var gender = "MALE";
+  var animalType = "brak";
+  var gender = "SAMIEC";
   var animalImage;
 
   var binaryData = [];
 
   const [eventFormName, setEventFormName] = useState([]);
-  var selectedType = "WALKING";
+  var selectedType = "SPACEROWANIE";
   var selectedVaccination = "";
   var eventName;
   var frequency = "once";
+  var frequencyName = "Jednorazowo";
   var tempModalDate;
 
   const getAnimalUpcomingEvents = () => {
@@ -132,21 +133,19 @@ const PetDetails = () => {
 
   // Toasts messages
   const eventSharedSuccessfullyNotify = () =>
-    toast.success("Post shared successfully");
-  const eventNameCannotBeEmptyNotify = () =>
-    toast.error("Event name cannot be empty!");
+    toast.success("Post został udostępniony pomyślnie.");
   const eventCreatedSuccessfullyNotify = () =>
-    toast.success("Event created successfully!");
+    toast.success("Wydarzenie utworzone pomyślnie!");
   const eventRemovedSuccessfullyNotify = () =>
-    toast.success("Event removed successfully!");
-  const eventAlreadyExistsNotify = () => toast.error("Event already exists!");
-  const eventCannotBeCreatedNotify = () => toast.error("Invalid date!");
+    toast.success("Wydarzenie zostało pomyślnie usunięte!");
+  const eventAlreadyExistsNotify = () => toast.error("Wydarzenie już istnieje!");
+  const eventCannotBeCreatedNotify = () => toast.error("Nieprawidłowa data!");
   const eventCannotBeDeletedNotify = () =>
     toast.error(
-      "Vaccinations that have already taken place cannot be removed!"
+      "Odbytych już szczepień nie można cofnąć!"
     );
   const vaccinationEventCannotBeDeletedNotify = () =>
-    toast.error("Vaccination cannot take place during this time!");
+    toast.error("W tym czasie nie mogą odbywać się szczepienia!");
 
   const handleAnimalType = (selectedAnimalType) => {
     animalType = selectedAnimalType;
@@ -184,13 +183,13 @@ const PetDetails = () => {
 
   function validateAnimalName(name) {
     if (name.length === 0) {
-      setNameError("The name cannot be empty.");
+      setNameError("Nazwa nie może być pusta.");
       return false;
     } else if (name.length < 1 || name.length > 15) {
-      setNameError("Inappropriate length.");
+      setNameError("Nieodpowiednia długość.");
       return false;
-    } else if (name.match(/[^a-zA-Z]/)) {
-      setNameError("The name can only contain letter.");
+    } else if (name.match(/[^a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/)) {
+      setNameError("Nazwa może zawierać tylko literę.");
       return false;
     }
     setNameError(null);
@@ -199,10 +198,10 @@ const PetDetails = () => {
 
   function validateWeight(weight) {
     if (weight === undefined) {
-      setWeightError("The weight cannot be empty.");
+      setWeightError("Waga nie może być pusta.");
       return false;
     } else if (weight < 0) {
-      setWeightError("The weight cannot be less than 0.");
+      setWeightError("Waga nie może być mniejsza niż 0.");
       return false;
     }
     setWeightError(null);
@@ -211,10 +210,10 @@ const PetDetails = () => {
 
   function validateAge(age) {
     if (age === undefined) {
-      setAgeError("The age cannot be empty.");
+      setAgeError("Wiek nie może być pusty.");
       return false;
     } else if (age < 0) {
-      setAgeError("The age cannot be less than 0.");
+      setAgeError("Wiek nie może być mniejszy niż 0.");
       return false;
     }
     setAgeError(null);
@@ -223,7 +222,7 @@ const PetDetails = () => {
 
   function validateFile(file) {
     if (file === undefined) {
-      setFileError("The file cannot be empty.");
+      setFileError("Plik nie może być pusty.");
       return false;
     }
     setFileError(null);
@@ -266,10 +265,8 @@ const PetDetails = () => {
           .updateAnimal(
             petId,
             name,
-            animalType,
             age,
             weight,
-            gender,
             animalImage
           )
           .then(
@@ -290,7 +287,7 @@ const PetDetails = () => {
   const handleFormType = (selectedEventType) => {
     selectedType = selectedEventType;
 
-    if (selectedType === "VACCINATION") {
+    if (selectedType === "SZCZEPIENIE") {
       setIsVaccination(true);
     } else {
       setIsVaccination(false);
@@ -307,9 +304,23 @@ const PetDetails = () => {
 
   const handleFormFrequency = (selectedEventFrequency) => {
     frequency = selectedEventFrequency;
-    document.getElementById("frequencyToggle").textContent =
-      frequency.toLowerCase().charAt(0).toUpperCase() +
-      frequency.toLowerCase().slice(1);
+
+    if(frequency === "once"){
+      document.getElementById("frequencyToggle").textContent = "Jednorazowo";
+      frequencyName = "Jednorazowo";
+    } else if(frequency === "everyday"){
+      document.getElementById("frequencyToggle").textContent = "Codziennie";
+      frequencyName = "Codziennie";
+    }
+    else if(frequency === "everyweek"){
+      document.getElementById("frequencyToggle").textContent = "Co tydzień";
+      frequencyName = "Co tydzień"
+    }
+    else if(frequency === "everymonth"){
+      document.getElementById("frequencyToggle").textContent = "Co miesiąc";
+      frequencyName = "Co miesiąc";
+    }
+    
   };
 
   const loadAvatar = () => {
@@ -390,7 +401,7 @@ const PetDetails = () => {
           .createEvent(
             petId,
             checkModalValue,
-            "VACCINATION",
+            "SZCZEPIENIE",
             "once",
             vaccinationEventDate
           )
@@ -426,7 +437,7 @@ const PetDetails = () => {
           .createEvent(
             petId,
             selectedVaccination,
-            "VACCINATION",
+            "SZCZEPIENIE",
             "once",
             eventDate
           )
@@ -489,9 +500,51 @@ const PetDetails = () => {
     }
   };
 
+  function translateDate(dateString) {
+    if (dateString === "") {
+      return "";
+    }
+
+    const days = {
+      Mon: "Pon",
+      Tue: "Wt",
+      Wed: "Śr",
+      Thu: "Czw",
+      Fri: "Pt",
+      Sat: "Sob",
+      Sun: "Niedz",
+    };
+
+    const months = {
+      Jan: "Sty",
+      Feb: "Lut",
+      Mar: "Mar",
+      Apr: "Kwi",
+      May: "Maj",
+      Jun: "Cze",
+      Jul: "Lip",
+      Aug: "Sie",
+      Sep: "Wrz",
+      Oct: "Paź",
+      Nov: "Lis",
+      Dec: "Gru",
+    };
+
+    const parts = dateString.split(" ");
+    const day = days[parts[0]];
+    const month = months[parts[1]];
+    const dayNumber = parts[2];
+    if (parts[3] === undefined) {
+      return `${day} ${month}`;
+    }
+    const year = parts[3];
+
+    return `${day} ${month} ${dayNumber} ${year}`;
+  }
+
   function validateDate(date) {
     if (date === "") {
-      setDateError("The name cannot be empty.");
+      setDateError("Należy wybrać datę.");
       return false;
     }
     return true;
@@ -499,11 +552,11 @@ const PetDetails = () => {
 
   function validateName(name) {
     if (name === undefined) {
-      setNameError("The name cannot be empty.");
+      setNameError("Nazwa nie może być pusta.");
       return false;
     }
     if (name.length < 1 || name.length > 60) {
-      setNameError("Inappropriate length.");
+      setNameError("Nieodpowiednia długość.");
       return false;
     }
     setNameError(null);
@@ -555,13 +608,9 @@ const PetDetails = () => {
   };
 
   const [value, onChange] = useState(new Date());
-  const minDate = new Date(
-    checkModalMinDate
-  );
+  const minDate = new Date(checkModalMinDate);
 
-  const maxDate = new Date(
-    checkModalMaxDate
-  )
+  const maxDate = new Date(checkModalMaxDate);
 
   const handleDayClick = (day) => {
     setDateError(null);
@@ -574,14 +623,13 @@ const PetDetails = () => {
         (result) => {
           if (result.data.name !== "") {
             setCheckModalValue(result.data.name);
-            
+
             setCheckModalMinDate(result.data.minDate);
             setCheckModalMaxDate(result.data.maxDate);
-            console.log(minDate);
-            console.log(maxDate);
+       
             handleCheckShow();
           }
-          console.log(result.data);
+        
         },
         (error) => {
           console.log(error);
@@ -665,7 +713,7 @@ const PetDetails = () => {
                 margin: "1%",
               }}
             >
-              About{" "}
+              Edytuj{" "}
               <BiEditAlt
                 style={{ fontSize: "20px", cursor: "pointer" }}
                 onClick={() => handleUpdateShow()}
@@ -694,9 +742,9 @@ const PetDetails = () => {
                   textAlign: "center",
                 }}
               >
-                <h5>Name:</h5>
+                <h5>Imię:</h5>
                 <p>{animal.name}</p>
-                <h5>Gender:</h5>
+                <h5>Płeć:</h5>
                 <p>{animal.animalGender}</p>
               </div>
               <div
@@ -707,10 +755,10 @@ const PetDetails = () => {
                   float: "left",
                 }}
               >
-                <h5>Type:</h5>
+                <h5>Rasa:</h5>
                 <p>{animalBreed.name}</p>
-                <h5>Age:</h5>
-                <p>{animal.age}</p>
+                <h5>Wiek:</h5>
+                <p>{animal.age + " lat"}</p>
               </div>
               <div
                 style={{
@@ -720,8 +768,8 @@ const PetDetails = () => {
                   float: "left",
                 }}
               >
-                <h5>Weight:</h5>
-                <p>{animal.weight}</p>
+                <h5>Waga:</h5>
+                <p>{animal.weight + "kg"}</p>
               </div>
             </div>
           </div>
@@ -735,7 +783,7 @@ const PetDetails = () => {
               fontSize: "70px",
             }}
           >
-            Did you know that?
+            Czy wiedziałeś o tym?
           </a>
         </div>
         <br />
@@ -765,7 +813,7 @@ const PetDetails = () => {
                   <BiQuestionMark style={{ fontSize: "30px" }} />
                 </div>
                 <Card.Body>
-                  <Card.Title>Dog facts</Card.Title>
+                  <Card.Title>Ciekawostka</Card.Title>
                   <Card.Text>{fact.name}</Card.Text>
                 </Card.Body>
               </Card>
@@ -780,7 +828,7 @@ const PetDetails = () => {
               fontSize: "70px",
             }}
           >
-            Upcoming events
+            Nadchodzące wydarzenia
           </a>
         </div>
 
@@ -795,15 +843,15 @@ const PetDetails = () => {
           <Table striped bordered hover className="text-center">
             <thead>
               <tr>
-                <th>Event type</th>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Actions</th>
+                <th>Rodzaj wydarzenia</th>
+                <th>Nazwa</th>
+                <th>Data</th>
+                <th>Operacje</th>
               </tr>
             </thead>
             <tbody>
               {animalUpcomingEvents.slice(0, 5).map((event, index) => {
-                if (event.event.eventType === "VACCINATION") {
+                if (event.event.eventType === "SZCZEPIENIE") {
                   return (
                     <tr key={index}>
                       <td>
@@ -831,7 +879,7 @@ const PetDetails = () => {
                       </td>
                     </tr>
                   );
-                } else if (event.event.eventType === "COMBING") {
+                } else if (event.event.eventType === "CZESANIE") {
                   return (
                     <tr>
                       <td>
@@ -859,7 +907,7 @@ const PetDetails = () => {
                       </td>
                     </tr>
                   );
-                } else if (event.event.eventType === "FEEDING") {
+                } else if (event.event.eventType === "KARMIENIE") {
                   return (
                     <tr>
                       <td>
@@ -887,7 +935,7 @@ const PetDetails = () => {
                       </td>
                     </tr>
                   );
-                } else if (event.event.eventType === "WALKING") {
+                } else if (event.event.eventType === "SPACEROWANIE") {
                   return (
                     <tr>
                       <td>
@@ -927,7 +975,7 @@ const PetDetails = () => {
               fontSize: "70px",
             }}
           >
-            Pet planner
+            Kalendarz wydarzeń
           </a>
         </div>
         <br />
@@ -1180,7 +1228,7 @@ const PetDetails = () => {
                   )}
 
                   <h6 style={{ textAlign: "center" }}>
-                    {event.date.slice(0, 10)}
+                    {translateDate(event.date.slice(0, 7))}
                   </h6>
 
                   <Card.Body>
@@ -1427,12 +1475,10 @@ const PetDetails = () => {
                         style={{ height: "50%" }}
                       />
                     )}
-                    <h6 style={{ textAlign: "center" }}>
-                      {event.date.slice(0, 10)}
-                    </h6>
+                    <h6 style={{ textAlign: "center" }}>{translateDate(event.date.slice(0, 7))}</h6>
                     <Card.Body>
                       {event.eventList.slice(0, 3).map((eve) => {
-                        if (eve.eventType === "FEEDING") {
+                        if (eve.eventType === "KARMIENIE") {
                           return (
                             <Card.Text
                               style={{ color: "orange", fontSize: "15px" }}
@@ -1440,7 +1486,7 @@ const PetDetails = () => {
                               <BiCheckCircle /> {eve.name.slice(0, 15)}
                             </Card.Text>
                           );
-                        } else if (eve.eventType === "COMBING") {
+                        } else if (eve.eventType === "CZESANIE") {
                           return (
                             <Card.Text
                               style={{ color: "brown", fontSize: "15px" }}
@@ -1448,7 +1494,7 @@ const PetDetails = () => {
                               <BiCheckCircle /> {eve.name.slice(0, 15)}
                             </Card.Text>
                           );
-                        } else if (eve.eventType === "VACCINATION") {
+                        } else if (eve.eventType === "SZCZEPIENIE") {
                           return (
                             <Card.Text
                               style={{ color: "red", fontSize: "15px" }}
@@ -1456,7 +1502,7 @@ const PetDetails = () => {
                               <BiCheckCircle /> {eve.name.slice(0, 15)}
                             </Card.Text>
                           );
-                        } else if (eve.eventType === "WALKING") {
+                        } else if (eve.eventType === "SPACEROWANIE") {
                           return (
                             <Card.Text
                               style={{ color: "green", fontSize: "15px" }}
@@ -1481,7 +1527,7 @@ const PetDetails = () => {
               fontSize: "70px",
             }}
           >
-            Events history
+            Historia wydarzeń
           </a>
         </div>
         <br />
@@ -1498,14 +1544,14 @@ const PetDetails = () => {
           <Table striped bordered hover className="text-center">
             <thead>
               <tr>
-                <th>Event type</th>
-                <th>Name</th>
-                <th>Date</th>
+                <th>Rodzaj wydarzenia</th>
+                <th>Nazwa</th>
+                <th>Data</th>
               </tr>
             </thead>
             <tbody>
               {deprecatedEvents.slice(0, 5).map((event, index) => {
-                if (event.eventType === "VACCINATION") {
+                if (event.eventType === "SZCZEPIENIE") {
                   return (
                     <tr key={index}>
                       <td>
@@ -1525,7 +1571,7 @@ const PetDetails = () => {
                       <td>{event.date.slice(0, 10)}</td>
                     </tr>
                   );
-                } else if (event.eventType === "COMBING") {
+                } else if (event.eventType === "CZESANIE") {
                   return (
                     <tr>
                       <td>
@@ -1545,7 +1591,7 @@ const PetDetails = () => {
                       <td>{event.date.slice(0, 10)}</td>
                     </tr>
                   );
-                } else if (event.eventType === "FEEDING") {
+                } else if (event.eventType === "KARMIENIE") {
                   return (
                     <tr>
                       <td>
@@ -1565,7 +1611,7 @@ const PetDetails = () => {
                       <td>{event.date.slice(0, 10)}</td>
                     </tr>
                   );
-                } else if (event.eventType === "WALKING") {
+                } else if (event.eventType === "SPACEROWANIE") {
                   return (
                     <tr>
                       <td>
@@ -1599,7 +1645,7 @@ const PetDetails = () => {
           </Modal.Header>
           <Modal.Body>
             <div style={{ textAlign: "center" }}>
-              <h4>{new String(eventDate).slice(0, 10)}</h4>
+              <h4>{translateDate(new String(eventDate).slice(0, 7))}</h4>
             </div>
             <div
               className="scrollable-div"
@@ -1608,7 +1654,7 @@ const PetDetails = () => {
               <Table>
                 <tbody>
                   {eventsInDay.map((dayEvent, index) => {
-                    if (dayEvent.eventType === "FEEDING") {
+                    if (dayEvent.eventType === "KARMIENIE") {
                       return (
                         <tr style={{ borderColor: "transparent" }} key={index}>
                           <td>
@@ -1635,7 +1681,7 @@ const PetDetails = () => {
                           </td>
                         </tr>
                       );
-                    } else if (dayEvent.eventType === "COMBING") {
+                    } else if (dayEvent.eventType === "CZESANIE") {
                       return (
                         <tr style={{ borderColor: "transparent" }}>
                           <td>
@@ -1662,7 +1708,7 @@ const PetDetails = () => {
                           </td>
                         </tr>
                       );
-                    } else if (dayEvent.eventType === "VACCINATION") {
+                    } else if (dayEvent.eventType === "SZCZEPIENIE") {
                       return (
                         <tr style={{ borderColor: "transparent" }}>
                           <td>
@@ -1689,7 +1735,7 @@ const PetDetails = () => {
                           </td>
                         </tr>
                       );
-                    } else if (dayEvent.eventType === "WALKING") {
+                    } else if (dayEvent.eventType === "SPACEROWANIE") {
                       return (
                         <tr style={{ borderColor: "transparent" }}>
                           <td>
@@ -1734,12 +1780,12 @@ const PetDetails = () => {
                         selectedType.toLowerCase().slice(1)}
                     </Dropdown.Toggle>
                     <Dropdown.Menu style={{ width: "100%" }}>
-                      <Dropdown.Item eventKey="VACCINATION">
-                        Vaccination
+                      <Dropdown.Item eventKey="SZCZEPIENIE">
+                        Szczepienie
                       </Dropdown.Item>
-                      <Dropdown.Item eventKey="FEEDING">Feeding</Dropdown.Item>
-                      <Dropdown.Item eventKey="COMBING">Combing</Dropdown.Item>
-                      <Dropdown.Item eventKey="WALKING">Walking</Dropdown.Item>
+                      <Dropdown.Item eventKey="KARMIENIE">Karmienie</Dropdown.Item>
+                      <Dropdown.Item eventKey="CZESANIE">Czesanie</Dropdown.Item>
+                      <Dropdown.Item eventKey="SPACEROWANIE">Spacerowanie</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
 
@@ -1747,7 +1793,7 @@ const PetDetails = () => {
                     className="text-muted"
                     onChange={() => setEventFormName()}
                   >
-                    Select an event type.
+                    Wybierz typ wydarzenia.
                   </Form.Text>
                 </Form.Group>
 
@@ -1786,7 +1832,7 @@ const PetDetails = () => {
                     <Form.Group className="mb-3">
                       <Form.Control
                         id="nameInput"
-                        placeholder="Event name"
+                        placeholder="Nazwa wydarzenia"
                         onChange={(e) => handleFormName(e.target.value)}
                       />
                     </Form.Group>
@@ -1799,24 +1845,23 @@ const PetDetails = () => {
                           variant="light"
                           style={{ width: "100%" }}
                         >
-                          {frequency.toLowerCase().charAt(0).toUpperCase() +
-                            frequency.toLowerCase().slice(1)}
+                          {frequencyName}
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ width: "100%" }}>
-                          <Dropdown.Item eventKey="once">Once</Dropdown.Item>
+                          <Dropdown.Item eventKey="once">Jednorazowo</Dropdown.Item>
                           <Dropdown.Item eventKey="everyday">
-                            Everyday
+                            Codziennie
                           </Dropdown.Item>
                           <Dropdown.Item eventKey="everyweek">
-                            Every Week
+                            Co tydzień 
                           </Dropdown.Item>
                           <Dropdown.Item eventKey="everymonth">
-                            Every Month
+                            Co miesiąc
                           </Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>
                       <Form.Text className="text-muted">
-                        Select a frequency.
+                        Wybierz częstowtliwość.
                       </Form.Text>
                     </Form.Group>
                   </div>
@@ -1850,7 +1895,7 @@ const PetDetails = () => {
                     }}
                     type="text"
                     className="form-control"
-                    placeholder="Enter the animal's name"
+                    placeholder="Wpisz imię zwierzaka"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
                   ></input>
@@ -1863,7 +1908,7 @@ const PetDetails = () => {
                     min={0}
                     max={1000}
                     className="form-control"
-                    placeholder="Enter the animal's weight"
+                    placeholder="Wpisz wagę zwierzaka"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
                   ></input>
@@ -1876,7 +1921,7 @@ const PetDetails = () => {
                     min={0}
                     max={1000}
                     className="form-control"
-                    placeholder="Enter the animal's age"
+                    placeholder="Wpisz wiek zwierzaka"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
                   ></input>
@@ -1894,19 +1939,19 @@ const PetDetails = () => {
                         gender.toLowerCase().slice(1)}
                     </Dropdown.Toggle>
                     <Dropdown.Menu style={{ width: "100%" }}>
-                      <Dropdown.Item eventKey="FEMALE">Female</Dropdown.Item>
-                      <Dropdown.Item eventKey="MALE">Male</Dropdown.Item>
+                      <Dropdown.Item eventKey="SAMICA">Samica</Dropdown.Item>
+                      <Dropdown.Item eventKey="SAMIEC">Samiec</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
 
                   <Form.Text className="text-muted">
-                    Select an animal gender.
+                    Wybierz płeć zwierzaka.
                   </Form.Text>
                 </Form.Group>
 
                 <br></br>
                 <Form.Text className="text-muted">
-                  Choose a picture of an animal
+                  Wybierz zdjęcie zwierzaka
                   <BiLinkAlt
                     id="clip"
                     style={{ width: "25px", height: "25px", cursor: "pointer" }}
@@ -1919,7 +1964,7 @@ const PetDetails = () => {
                   onClick={() => handleAnimalUpdate()}
                   style={{ float: "right" }}
                 >
-                  Create
+                  Zaktualizuj
                 </Button>
               </Form>
             </div>
@@ -1935,9 +1980,9 @@ const PetDetails = () => {
           </Modal.Header>
           <Modal.Body>
             <div style={{ textAlign: "center" }}>
-              <h5>Vaccination reminder</h5>
+              <h5>Przypomnienie o szczepieniach</h5>
               <a style={{ color: "grey" }}>
-                Vaccination date is approaching, take care of your dog
+                Zbliża się termin szczepień, zadbaj o swojego zwierzaka
               </a>
               <br />
               <br />
@@ -1951,21 +1996,21 @@ const PetDetails = () => {
                   value={value}
                   minDate={minDate}
                   maxDate={maxDate}
-                  locale="en-GB"
+                  locale="pl-PL"
                   onClickDay={handleDayClick}
                 />
               </div>
               <br />
-              <h6>{selectedCheckDay.toString().slice(0, 15)}</h6>
+              <h6>{translateDate(selectedCheckDay.toString().slice(0, 15))}</h6>
               {dateError && <Alert variant="danger">{dateError}</Alert>}
             </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="success" onClick={() => handleSaveVaccination()}>
-              Save
+              Dodaj
             </Button>
             <Button variant="danger" onClick={() => handleCheckClose()}>
-              Skip
+              Pomiń
             </Button>
           </Modal.Footer>
         </Modal>

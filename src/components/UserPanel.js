@@ -16,9 +16,9 @@ const UserPanel = () => {
   const [animals, setAnimals] = useState([]);
   const [friends, setFriends] = useState([]);
 
-  const inviteSuccess = () => toast.success("The invitation has been sent");
+  const inviteSuccess = () => toast.success("Zaproszenie zostało wysłane");
   const inviteCurrentExistNotify = () =>
-    toast.error("Invite is currently exist");
+    toast.error("Zaproszenie już istnieje");
 
   const getUserAnimal = () => {
     userProfileService.getUserAnimals(user.id).then(
@@ -129,14 +129,14 @@ const UserPanel = () => {
               }}
               src={"data:image/png;base64," + user.photo}
             />
-            <h5 style={{ marginTop: "10px" }}>User name:</h5>
+            <h5 style={{ marginTop: "10px" }}>Nazwa użytkownika:</h5>
             <a>{user.username}</a>
-            <h5 style={{ marginTop: "10px" }}>Email:</h5>
+            <h5 style={{ marginTop: "10px" }}>E-mail:</h5>
             <a>{user.email}</a>
             <br />
             <br />
             <Button variant="success" onClick={() => inviteUser(user.username)}>
-              <BiMailSend style={{ fontSize: "20px" }} /> Invite
+              <BiMailSend style={{ fontSize: "20px" }} /> Zaproś
             </Button>
             <br />
             <br />
@@ -158,7 +158,7 @@ const UserPanel = () => {
               " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
           }}
         >
-          <h5 style={{ margin: "15px" }}>User pets</h5>
+          <h5 style={{ margin: "15px" }}>Zwierzęta użytkownika</h5>
           <div
             style={{
               display: "block",
@@ -192,11 +192,11 @@ const UserPanel = () => {
                 <Card.Body>
                   <Card.Title>{animal.name}</Card.Title>
                   <Card.Text>
-                    <a>Age: </a>
-                    <strong>{animal.age}</strong>
+                    <a>Wiek: </a>
+                    <strong>{animal.age + " lat"}</strong>
                     <br></br>
-                    <a>Weight: </a>
-                    <strong>{animal.weight}</strong>
+                    <a>Waga: </a>
+                    <strong>{animal.weight + " kg"}</strong>
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -218,7 +218,7 @@ const UserPanel = () => {
               " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
           }}
         >
-          <h5 style={{ margin: "15px" }}>User friends</h5>
+          <h5 style={{ margin: "15px" }}>Znajomi użytkownika</h5>
           <div
             style={{
               display: "block",
@@ -251,10 +251,10 @@ const UserPanel = () => {
                 />
                 <Card.Body>
                   <Card.Text>
-                    <a>Name: </a>
+                    <a>Imię: </a>
                     <strong>{friend.username}</strong>
                     <br></br>
-                    <a>Email: </a>
+                    <a>E-mail: </a>
                     <strong>{friend.email}</strong>
                   </Card.Text>
                 </Card.Body>

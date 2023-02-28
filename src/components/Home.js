@@ -55,8 +55,8 @@ const Home = () => {
     setShow(false);
   };
 
-  const postIsRatedNotify = () => toast.error("Post is currently rated");
-  const postDataIsIncorrect = () => toast.error("Enter text and photo");
+  const postIsRatedNotify = () => toast.error("Post został oceniony.");
+  const postDataIsIncorrect = () => toast.error("Podaj tekst oraz zdjęcie.");
 
   const handleContent = (givenContent) => {
     content = givenContent;
@@ -403,7 +403,7 @@ const Home = () => {
                 fontFamily: "Verdana, sans-serif",
               }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;Friends
+              &nbsp;&nbsp;&nbsp;&nbsp;Znajomi
             </a>
           </div>
 
@@ -414,7 +414,7 @@ const Home = () => {
               textAlign: "center",
             }}
           >
-            Upcoming events
+            Najbliższe wydarzenia
           </h5>
           <hr
             style={{
@@ -460,10 +460,10 @@ const Home = () => {
                     />
                     <Card.Title>{upcommingEvent.animal.name}</Card.Title>
                     <Card.Text>
-                      <a>Event date: </a>
+                      <a>Data: </a>
                       <strong>{upcommingEvent.date.slice(0, 10)}</strong>
                       <br></br>
-                      <a>Event title: </a>
+                      <a>Tytuł: </a>
                       <strong>{upcommingEvent.event.name.slice(0, 15)}</strong>
                       <br></br>
                     </Card.Text>
@@ -490,7 +490,7 @@ const Home = () => {
               textAlign: "center",
             }}
           >
-            Contacts
+            Kontakty
           </h5>
           <hr
             style={{
@@ -542,7 +542,7 @@ const Home = () => {
               textAlign: "center",
             }}
           >
-            Invitations
+            Zaproszenia
           </h5>
           <hr
             style={{
@@ -642,7 +642,7 @@ const Home = () => {
                 id="postContentInput"
                 onChange={(e) => handleContent(e.target.value)}
                 type="text"
-                placeholder="What do you want to share?"
+                placeholder="Czym się chcesz podzielić?"
                 style={{ width: "67%", marginLeft: "2%" }}
               />
 
@@ -802,7 +802,7 @@ const Home = () => {
         </Modal.Header>
         <Modal.Body style={{ alignItems: "center" }}>
           <div style={{ textAlign: "center" }}>
-            <h5>Comments</h5>
+            <h5>Komentarze</h5>
           </div>
           <div
             className="scrollable-div"
@@ -887,13 +887,13 @@ const Home = () => {
                 <Form.Control
                   id="commentContentInput"
                   type="email"
-                  placeholder="Write a comment..."
+                  placeholder="Napisz komentarz..."
                   onChange={(e) => setContent(e.target.value)}
                 />
                 <br></br>
                 {commentError && <Alert variant="danger">{commentError}</Alert>}
                 <Form.Text className="text-muted">
-                  Write what you think about this post.
+                  Co myślisz o tym poście?
                 </Form.Text>
               </Form.Group>
 
@@ -904,7 +904,7 @@ const Home = () => {
                   createComment(localStorage.getItem("postId"), commentContent)
                 }
               >
-                Publish
+                Opublikuj
               </Button>
             </Form>
           </div>

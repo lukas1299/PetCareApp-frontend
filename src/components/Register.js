@@ -28,7 +28,7 @@ const Register = () => {
     setConfirmPasswordError(null);
     setSubmitError(null);
     if (login.length === 0) {
-      setLoginError("The login cannot be empty.");
+      setLoginError("Login nie może być pusty.");
       return false;
     }
     setLoginError(null);
@@ -54,7 +54,7 @@ const Register = () => {
     setConfirmPasswordError(null);
     setSubmitError(null);
     if (password.length < 8) {
-      setPasswordError("Incorrect password!");
+      setPasswordError("Niepoprawne hasło!");
       return false;
     }
     setPasswordError(null);
@@ -67,10 +67,10 @@ const Register = () => {
     setConfirmPasswordError(null);
     setSubmitError(null);
     if (email.length < 5) {
-      setEmailError("Incorrect email length");
+      setEmailError("Nieprawidłowa długość e-maila.");
       return false;
     } else if (!email.match("@")) {
-      setEmailError("Email address must have @");
+      setEmailError("Adres e-mail musi mieć @.");
       return false;
     }
     setEmailError(null);
@@ -84,7 +84,7 @@ const Register = () => {
     setSubmitError(null);
 
     if (password !== confirmPassword) {
-      setConfirmPasswordError("The passwords are not the same");
+      setConfirmPasswordError("Hasła muszą być takie same.");
       return false;
     }
     setConfirmPasswordError(null);
@@ -98,7 +98,7 @@ const Register = () => {
     setConfirmPasswordError(null);
     setSubmitError(null);
     if (!radioState) {
-      setSubmitError("Accept the terms and conditions");
+      setSubmitError("Zaakceptuj regulamin.");
       return false;
     }
     setSubmitError(null);
@@ -131,7 +131,7 @@ const Register = () => {
           (error) => {
             console.log(error);
             if (error.response.status === 400) {
-              setSubmitError("The user already exists");
+              setSubmitError("Użytkownik już istnieje.");
             }
           }
         );
@@ -176,7 +176,7 @@ const Register = () => {
               marginTop: "10%",
             }}
           >
-            Sign up
+            Rejestracja
           </a>
           <div
             style={{
@@ -193,11 +193,11 @@ const Register = () => {
           <div className="Auth-form-content">
             <div className="form-group mt-3">
               <label>
-                <strong>Login / Username</strong>
+                <strong>Login / Nazwa użytkownika</strong>
               </label>
               <input
                 className="form-control mt-1"
-                placeholder="Enter login"
+                placeholder="Podaj login"
                 style={{
                   width: "50%",
                   marginLeft: "auto",
@@ -221,11 +221,11 @@ const Register = () => {
             </div>
             <div className="form-group mt-3">
               <label>
-                <strong>Email</strong>
+                <strong>E-mail</strong>
               </label>
               <input
                 className="form-control mt-1"
-                placeholder="Enter email"
+                placeholder="Podaj e-mail"
                 style={{
                   width: "50%",
                   marginLeft: "auto",
@@ -249,12 +249,12 @@ const Register = () => {
             </div>
             <div className="form-group mt-3">
               <label>
-                <strong>Password</strong>
+                <strong>Hasło</strong>
               </label>
               <input
                 type="password"
                 className="form-control mt-1"
-                placeholder="Enter password"
+                placeholder="Podaj hasło"
                 style={{
                   width: "50%",
                   marginLeft: "auto",
@@ -278,12 +278,12 @@ const Register = () => {
             </div>
             <div className="form-group mt-3">
               <label>
-                <strong>Confirm password</strong>
+                <strong>Potwierdź hasło</strong>
               </label>
               <input
                 type="password"
                 className="form-control mt-1"
-                placeholder="Confirm password"
+                placeholder="Potwierdź hasło"
                 style={{
                   width: "50%",
                   marginLeft: "auto",
@@ -311,7 +311,7 @@ const Register = () => {
               checked={radioState}
             />
             <a style={{ marginLeft: "10px" }}>
-              I accept the terms and conditions
+              Akceptuję zasady i warunki
             </a>
             <br></br>
             <a>
@@ -320,7 +320,7 @@ const Register = () => {
                 style={{ width: "25px", height: "25px", cursor: "pointer" }}
                 onClick={() => fileHandler()}
               />{" "}
-              Select photo
+              Wybierz zdjęcie
             </a>
 
             <div className="d-grid gap-2 mt-3">
@@ -333,7 +333,7 @@ const Register = () => {
                 }}
                 onClick={() => handleRegister()}
               >
-                Register
+                Zarejestruj
               </button>
               {submitError && (
                 <Alert

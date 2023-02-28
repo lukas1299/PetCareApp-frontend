@@ -14,7 +14,7 @@ const ForumDetails = () => {
 
   var binaryData = [];
 
-  const postIsRatedNotify = () => toast.error("Post is currently rated");
+  const postIsRatedNotify = () => toast.error("Post został już oceniony.");
 
   const getAllTopicDetails = () => {
     forumService.getTopicDetails().then(
@@ -171,10 +171,10 @@ const ForumDetails = () => {
                 textAlign: "center",
               }}
             >
-              <h6>Title:</h6>
+              <h6>Tytuł:</h6>
               <h4>{topic.title}</h4>
               <div>
-                <h6>Description:</h6>
+                <h6>Opis:</h6>
                 <h5>{topic.description}</h5>
               </div>
             </div>
@@ -315,7 +315,7 @@ const ForumDetails = () => {
                 id="messageInput"
                 onChange={(e) => setMessage(e.target.value)}
                 type="text"
-                placeholder="Message..."
+                placeholder="Napisz wiadomość..."
                 className="form-control"
                 aria-label="Username"
               ></input>

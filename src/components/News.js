@@ -87,7 +87,7 @@ const News = () => {
                   fontSize: "70px",
                 }}
               >
-                News
+                Nowości
               </a>
             </div>
             <br />

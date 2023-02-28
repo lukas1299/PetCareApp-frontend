@@ -92,7 +92,7 @@ const Quizzes = () => {
             <a
               style={{ fontWeight: "bold", fontSize: "70px", marginLeft: "5%" }}
             >
-              Quizzes
+              Quizy
             </a>
             <br></br>
 

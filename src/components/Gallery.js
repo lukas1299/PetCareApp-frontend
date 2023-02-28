@@ -69,7 +69,7 @@ const Gallery = () => {
             <a
               style={{ fontWeight: "bold", fontSize: "70px", marginLeft: "5%" }}
             >
-              Gallery
+              Galeria
             </a>
             <br></br>
             <br></br>

@@ -16,7 +16,7 @@ const Login = () => {
 
   const validateLogin = (login) => {
     if (login.length === 0) {
-      setLoginError("The login cannot be empty.");
+      setLoginError("Login nie może być pusty.");
       return false;
     }
     setLoginError(null);
@@ -25,7 +25,7 @@ const Login = () => {
 
   const validatePassword = (password) => {
     if (password.length < 8) {
-      setPasswordError("Incorrect password!");
+      setPasswordError("Niepoprawne hasło!");
       return false;
     }
     setPasswordError(null);
@@ -45,7 +45,7 @@ const Login = () => {
           (error) => {
             console.log(error);
             if (error.response.status === 400) {
-              setSubmitError("Invalid login or password.");
+              setSubmitError("Niepoprawny login lub hasło.");
             }
           }
         );
@@ -90,7 +90,7 @@ const Login = () => {
               marginTop: "10%",
             }}
           >
-            Sign in to Account
+            Zaloguj się na konto
           </a>
           <div
             style={{
@@ -115,7 +115,7 @@ const Login = () => {
                 </label>
                 <input
                   className="form-control mt-1"
-                  placeholder="Enter login"
+                  placeholder="Podaj login"
                   style={{
                     width: "50%",
                     marginLeft: "auto",
@@ -139,12 +139,12 @@ const Login = () => {
               </div>
               <div className="form-group mt-3">
                 <label>
-                  <strong>Password</strong>
+                  <strong>Hasło</strong>
                 </label>
                 <input
                   type="password"
                   className="form-control mt-1"
-                  placeholder="Enter password"
+                  placeholder="Podaj hasło"
                   style={{
                     width: "50%",
                     marginLeft: "auto",
@@ -176,7 +176,7 @@ const Login = () => {
                     marginRight: "auto",
                   }}
                 >
-                  Login
+                  Zaloguj
                 </button>
                 {submitError && (
                   <Alert
@@ -207,7 +207,7 @@ const Login = () => {
                 ></div>
                 <a>
                   <strong>
-                    Fill up personal information and start journey with us.
+                    Jeśli nie masz konta załóż je.
                   </strong>
                 </a>
 
@@ -220,7 +220,7 @@ const Login = () => {
                   }}
                   onClick={() => navigate("/register")}
                 >
-                  Register
+                  Rejestracja
                 </button>
               </div>
             </div>

@@ -105,9 +105,9 @@ const Collections = () => {
     );
   };
 
-  const collectionNotFoundNotify = () => toast.error("Collection not found.");
+  const collectionNotFoundNotify = () => toast.error("Nie znaleziono kolekcji.");
   const collectionSharedSuccessfullyNotify = () =>
-    toast.success("Collection shared successfully");
+    toast.success("Kolekcja została udostępniona pomyślnie.");
 
   const loadMyCollections = () => {
     collectionService.getMyCollections().then(
@@ -144,7 +144,7 @@ const Collections = () => {
 
   const handleFriendSetMoney = (value) => {
     if (value < 1) {
-      setFriendMoneyError("Invalid amount");
+      setFriendMoneyError("Nieprawidłowa kwota");
       setFriendModalDonateButton(true);
     } else {
       setFriendModalDonateButton(false);
@@ -155,7 +155,7 @@ const Collections = () => {
 
   const handleOtherPeopleSetMoney = (value) => {
     if (value < 1) {
-      setOtherPeopleMoneyError("Invalid amount");
+      setOtherPeopleMoneyError("Nieprawidłowa kwota");
       setOtherPeopleModalDonateButton(true);
     } else {
       setOtherPeopleModalDonateButton(false);
@@ -172,7 +172,7 @@ const Collections = () => {
 
   function validateTitle(title) {
     if (title.length < 2 || title === "") {
-      setTitleError("Invalid title.");
+      setTitleError("Nieprawidłowy tytuł");
       return false;
     }
     setTitleError(null);
@@ -181,7 +181,7 @@ const Collections = () => {
 
   function validateMoneyAmount(moneyToCollect) {
     if (moneyToCollect < 1 || moneyToCollect > 1000000) {
-      setMoneyToCollectError("Invalid amount of money.");
+      setMoneyToCollectError("Nieprawidłowa kwota pieniędzy.");
       return false;
     }
     setMoneyToCollectError(null);
@@ -190,7 +190,7 @@ const Collections = () => {
 
   function validateCollectionDescription(collectionDescription) {
     if (collectionDescription.length < 2 || collectionDescription.length > 32) {
-      setCollectionDescriptionError("Invalid description.");
+      setCollectionDescriptionError("Nieprawidłowy opis.");
       return false;
     }
     setCollectionDescriptionError(null);
@@ -286,7 +286,6 @@ const Collections = () => {
           }}
         >
           {foundCollections.data.slice(0, 5).map((collection, index) => {
-            console.log(collection);
             if (collection.user.id === me.id) {
               return (
                 <div style={{ marginLeft: "4%" }}>
@@ -464,7 +463,7 @@ const Collections = () => {
 
               <Form.Control
                 type="text"
-                placeholder="Search..."
+                placeholder="Szukaj..."
                 style={{
                   float: "left",
                   width: "60%",
@@ -507,7 +506,7 @@ const Collections = () => {
                 marginLeft: "5%",
               }}
             >
-              My collections
+              Moje zbiórki
             </h5>
 
             <div
@@ -590,7 +589,7 @@ const Collections = () => {
                 marginLeft: "5%",
               }}
             >
-              Friends collections
+              Zbiórki moich znajomych
             </h5>
             <div
               style={{
@@ -649,7 +648,7 @@ const Collections = () => {
                       variant="light"
                       onClick={() => handleFriendsModalShow(collection)}
                     >
-                      Donate
+                      Wesprzyj
                     </Button>
                   </Card>
                 );
@@ -663,7 +662,7 @@ const Collections = () => {
                 marginLeft: "5%",
               }}
             >
-              Other collections
+              Zbiórki innych użytkowników
             </h5>
             <div
               style={{
@@ -720,7 +719,7 @@ const Collections = () => {
                       variant="light"
                       onClick={() => handleOtherPeopleModalShow(collection)}
                     >
-                      Donate
+                      Wesprzyj
                     </Button>
                   </Card>
                 );
@@ -774,7 +773,7 @@ const Collections = () => {
               onChange={(e) => handleSetTitle(e.target.value)}
               type="text"
               className="form-control"
-              placeholder="Title"
+              placeholder="Tytuł"
               aria-label="Username"
               aria-describedby="basic-addon1"
             ></input>
@@ -788,7 +787,7 @@ const Collections = () => {
               type="number"
               min={1}
               className="form-control"
-              placeholder="Money to collect"
+              placeholder="Cel zbiorki"
               aria-label="Username"
               aria-describedby="basic-addon1"
             ></input>
@@ -800,7 +799,7 @@ const Collections = () => {
           <div className="input-group">
             <textarea
               onChange={(e) => handleSetCollectionDescription(e.target.value)}
-              placeholder="Describe what you are raising money for..."
+              placeholder="Opisz, na co zbierasz pieniądze..."
               className="form-control"
               aria-label="With textarea"
             ></textarea>
@@ -812,7 +811,7 @@ const Collections = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="success" onClick={(e) => handleCollectionCreation()}>
-            Create
+            Stwórz
           </Button>
         </Modal.Footer>
       </Modal>
@@ -828,7 +827,7 @@ const Collections = () => {
           <h5 style={{ textAlign: "center" }}>{myCollection.title}</h5>
           <br />
           <h6 style={{ textAlign: "center" }}>
-            Target: <strong>{myCollection.target}</strong>$
+            Cel: <strong>{myCollection.target}</strong>$
           </h6>
           <div
             className="scrollable-div"
@@ -836,8 +835,8 @@ const Collections = () => {
           >
             <Table>
               <tr>
-                <th>User</th>
-                <th>Money</th>
+                <th>Użytkownik</th>
+                <th>Kwota</th>
               </tr>
               {myCollection.donates === undefined ||
               myCollection.donates.length === 0 ? (
@@ -882,7 +881,7 @@ const Collections = () => {
           <h5 style={{ textAlign: "center" }}>{myCollection.title}</h5>
           <br />
           <h6 style={{ textAlign: "center" }}>
-            Target: <strong>{myCollection.target}</strong>$
+            Cel: <strong>{myCollection.target}</strong>$
           </h6>
           <div
             className="scrollable-div"
@@ -890,8 +889,8 @@ const Collections = () => {
           >
             <Table>
               <tr>
-                <th>User</th>
-                <th>Money</th>
+                <th>Użytkownik</th>
+                <th>Kwota</th>
               </tr>
               {myCollection.donates === undefined ||
               myCollection.donates.length === 0 ? (
@@ -929,7 +928,7 @@ const Collections = () => {
             onInput={(e) => (e.target.value = e.target.value.slice(0, 7))}
             min={1}
             className="form-control"
-            placeholder="Money"
+            placeholder="Podaj kwotę"
             aria-label="Username"
             aria-describedby="basic-addon1"
           ></input>
@@ -944,7 +943,7 @@ const Collections = () => {
             onClick={(e) => handleDonate(myCollection)}
             disabled={friendModalDonateButton}
           >
-            Donate <BiCoin />
+            Wesprzyj <BiCoin />
           </Button>
         </Modal.Footer>
       </Modal>
@@ -960,7 +959,7 @@ const Collections = () => {
           <h5 style={{ textAlign: "center" }}>{myCollection.title}</h5>
           <br />
           <h6 style={{ textAlign: "center" }}>
-            Target: <strong>{myCollection.target}</strong>$
+            Cel: <strong>{myCollection.target}</strong>$
           </h6>
           <div
             className="scrollable-div"
@@ -968,8 +967,8 @@ const Collections = () => {
           >
             <Table>
               <tr>
-                <th>User</th>
-                <th>Money</th>
+                <th>Użytkownik</th>
+                <th>Kwota</th>
               </tr>
               {myCollection.donates === undefined ||
               myCollection.donates.length === 0 ? (
@@ -1006,7 +1005,7 @@ const Collections = () => {
             type="number"
             min={1}
             className="form-control"
-            placeholder="Money"
+            placeholder="Podaj kwotę"
             aria-label="Username"
             aria-describedby="basic-addon1"
             style={{ margin: "2px" }}
@@ -1023,7 +1022,7 @@ const Collections = () => {
             onClick={(e) => handleDonate(myCollection)}
             disabled={otherPeopleModalDonateButton}
           >
-            Donate <BiCoin />
+            Wesprzyj <BiCoin />
           </Button>
         </Modal.Footer>
       </Modal>

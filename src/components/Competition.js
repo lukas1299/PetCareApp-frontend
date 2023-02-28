@@ -130,7 +130,7 @@ const Competition = () => {
                   fontSize: "70px",
                 }}
               >
-                Gallery
+                Galeria
               </a>
             </div>
 
@@ -211,7 +211,7 @@ const Competition = () => {
                     fontSize: "70px",
                   }}
                 >
-                  Did you know that?
+                  Wiedziałeś to?
                 </a>
               </div>
              
@@ -252,7 +252,7 @@ const Competition = () => {
                         <BiQuestionMark style={{ fontSize: "30px" }} />
                       </div>
                       <Card.Body>
-                        <Card.Title>Dog facts</Card.Title>
+                        <Card.Title>Ciekawostka</Card.Title>
                         <Card.Text>{fact.name}</Card.Text>
                       </Card.Body>
                     </Card>
@@ -269,9 +269,9 @@ const Competition = () => {
                     marginRight: "auto",
                   }}
                 >
-                  Our winners
+                  Nasi zwycięzcy
                 </a>
-                <h5>Here are the winners of our competitions</h5>
+                <h5>Oto zwyciezcy naszych konkursów</h5>
               </div>
             </div>
 
@@ -316,7 +316,7 @@ const Competition = () => {
                           </a>
                         </Card.Text>
                         <Card.Text>
-                          <a>Collected votes:</a>
+                          <a>Zebrane głosy:</a>
                         </Card.Text>
                         <Card.Text>
                           <a>
@@ -337,12 +337,12 @@ const Competition = () => {
                   clear: "both",
                 }}
               >
-                Competitions
+                Konkursy
               </a>
             </div>
 
             <div style={{ width: "100%", textAlign: "center" }}>
-              <h5>Check out our competition</h5>
+              <h5>Sprawdź nasze konkursy</h5>
             </div>
 
             <div

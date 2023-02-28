@@ -83,10 +83,10 @@ const MePanel = () => {
     setEmailError(null);
     setFileError(null);
     if (name.length === 0) {
-      setNameError("The name cannot be empty.");
+      setNameError("Nazwa nie może być pusta.");
       return false;
     } else if (name.length < 1 || name.length > 15) {
-      setNameError("Inappropriate length.");
+      setNameError("Nieodpowiednia długość.");
       return false;
     }
     setNameError(null);
@@ -97,10 +97,10 @@ const MePanel = () => {
     setNameError(null);
     setFileError(null);
     if (email.length < 5) {
-      setEmailError("Incorrect email length");
+      setEmailError("Nieprawidłowa długość e-maila.");
       return false;
     } else if (!email.match("@")) {
-      setEmailError("Email address must have @");
+      setEmailError("Adres e-mail musi mieć @.");
       return false;
     }
     setEmailError(null);
@@ -111,7 +111,7 @@ const MePanel = () => {
     setNameError(null);
     setEmailError(null);
     if (userImage === undefined) {
-      setFileError("The file cannot be empty.");
+      setFileError("Plik nie może być pusty.");
       return false;
     }
     setFileError(null);
@@ -219,9 +219,9 @@ const MePanel = () => {
               <BiEditAlt />
             </h5>
 
-            <h5 style={{ marginTop: "10px" }}>User name:</h5>
+            <h5 style={{ marginTop: "10px" }}>Nazwa użytkownika:</h5>
             <a>{user.username}</a>
-            <h5 style={{ marginTop: "10px" }}>Email:</h5>
+            <h5 style={{ marginTop: "10px" }}>E-mail:</h5>
             <a>{user.email}</a>
             <br />
             <br />
@@ -243,7 +243,7 @@ const MePanel = () => {
               " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
           }}
         >
-          <h5 style={{ margin: "15px" }}>User pets</h5>
+          <h5 style={{ margin: "15px" }}>Zwierzęta należące do użytkownika</h5>
           <div
             style={{
               display: "block",
@@ -277,11 +277,11 @@ const MePanel = () => {
                 <Card.Body>
                   <Card.Title>{animal.name}</Card.Title>
                   <Card.Text>
-                    <a>Age: </a>
-                    <strong>{animal.age}</strong>
+                    <a>Wiek: </a>
+                    <strong>{animal.age + " lat"}</strong>
                     <br></br>
-                    <a>Weight: </a>
-                    <strong>{animal.weight}</strong>
+                    <a>Waga: </a>
+                    <strong>{animal.weight + " kg"}</strong>
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -303,7 +303,7 @@ const MePanel = () => {
               " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
           }}
         >
-          <h5 style={{ margin: "15px" }}>User friends</h5>
+          <h5 style={{ margin: "15px" }}>Znajomi</h5>
           <div
             style={{
               display: "block",
@@ -336,10 +336,10 @@ const MePanel = () => {
                 />
                 <Card.Body>
                   <Card.Text>
-                    <a>Name: </a>
+                    <a>Nazwa: </a>
                     <strong>{friend.username}</strong>
                     <br></br>
-                    <a>Email: </a>
+                    <a>E-mail: </a>
                     <strong>{friend.email}</strong>
                   </Card.Text>
                 </Card.Body>
@@ -363,7 +363,7 @@ const MePanel = () => {
                     }}
                     type="text"
                     className="form-control"
-                    placeholder="Enter the user's new name"
+                    placeholder="Wprowadź nową nazwę użytkownika"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
                   ></input>
@@ -374,7 +374,7 @@ const MePanel = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     type="text"
                     className="form-control"
-                    placeholder="Enter the user's new email"
+                    placeholder="Wprowadź nowy adres e-mail użytkownika"
                     aria-label="Email"
                     aria-describedby="basic-addon1"
                   ></input>
@@ -383,7 +383,7 @@ const MePanel = () => {
 
                 <br></br>
                 <Form.Text className="text-muted">
-                  Choose a new avatar
+                  Wybierz nowego awatara
                   <BiLinkAlt
                     id="clip"
                     style={{ width: "25px", height: "25px", cursor: "pointer" }}
@@ -396,7 +396,7 @@ const MePanel = () => {
                   onClick={() => handleUserUpdate()}
                   style={{ float: "right" }}
                 >
-                  Update
+                  Zaktualizuj
                 </Button>
               </Form>
             </div>

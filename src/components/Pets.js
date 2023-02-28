@@ -40,11 +40,11 @@ const Pets = () => {
   const navigate = useNavigate();
 
   var binaryData = [];
-  var animalType = "no breed";
-  var gender = "MALE";
+  var animalType = "brak";
+  var gender = "SAMIEC";
   var animalImage;
 
-  const petNotFoundNotify = () => toast.error("Pet not found.");
+  const petNotFoundNotify = () => toast.error("Nie znaleziono zwierzaka.");
 
   const loadAvatar = () => {
     navbarService.getUserImage().then(
@@ -134,7 +134,6 @@ const Pets = () => {
   const getBreeds = () => {
     petService.getBreeds().then(
       (response) => {
-        console.log(response.data);
         setBreeds(response.data);
       },
       (error) => {
@@ -145,13 +144,13 @@ const Pets = () => {
 
   function validateName(name) {
     if (name.length === 0) {
-      setNameError("The name cannot be empty.");
+      setNameError("Imię nie może być puste.");
       return false;
     } else if (name.length < 1 || name.length > 15) {
-      setNameError("Inappropriate length.");
+      setNameError("Nieodpowiednia długość.");
       return false;
-    } else if (name.match(/[^a-zA-Z]/)) {
-      setNameError("The name can only contain letter.");
+    } else if (name.match(/[^a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/)) {
+      setNameError("Nazwa może zawierać tylko literę.");
       return false;
     }
     setNameError(null);
@@ -160,10 +159,10 @@ const Pets = () => {
 
   function validateWeight(weight) {
     if (weight === undefined) {
-      setWeightError("The weight cannot be empty.");
+      setWeightError("Waga nie może być pusta.");
       return false;
     } else if (weight < 0) {
-      setWeightError("The weight cannot be less than 0.");
+      setWeightError("Waga nie może być mniejsza niż 0.");
       return false;
     }
     setWeightError(null);
@@ -172,10 +171,10 @@ const Pets = () => {
 
   function validateAge(age) {
     if (age === undefined) {
-      setAgeError("The age cannot be empty.");
+      setAgeError("Wiek nie może być pusty.");
       return false;
     } else if (age < 0) {
-      setAgeError("The age cannot be less than 0.");
+      setAgeError("Wiek nie może być mniejszy niż 0.");
       return false;
     }
     setAgeError(null);
@@ -184,7 +183,7 @@ const Pets = () => {
 
   function validateFile(file) {
     if (file === undefined) {
-      setFileError("The file cannot be empty.");
+      setFileError("Plik nie może być pusty.");
       return false;
     }
     setFileError(null);
@@ -279,7 +278,7 @@ const Pets = () => {
                       variant="danger"
                       onClick={() => deleteAnimal(animal.id)}
                     >
-                      Remove
+                      Usuń
                     </Button>
                   </div>
                 </Card.Body>
@@ -352,7 +351,7 @@ const Pets = () => {
 
               <Form.Control
                 type="text"
-                placeholder="Search..."
+                placeholder="Szukaj..."
                 style={{
                   float: "left",
                   width: "60%",
@@ -409,11 +408,11 @@ const Pets = () => {
                   <Card.Body>
                     <Card.Title>{animal.name}</Card.Title>
                     <Card.Text>
-                      <a>Age: </a>
-                      <strong>{animal.age}</strong>
+                      <a>Wiek: </a>
+                      <strong>{animal.age + " lat"}</strong>
                       <br></br>
-                      <a>Weight: </a>
-                      <strong>{animal.weight}</strong>
+                      <a>Waga: </a>
+                      <strong>{animal.weight + " kg"}</strong>
                     </Card.Text>
                     <div style={{ alignSelf: "flex-end", height: "50px" }}>
                       <BiInfoCircle
@@ -438,7 +437,7 @@ const Pets = () => {
                         variant="danger"
                         onClick={() => deleteAnimal(animal.id)}
                       >
-                        Remove
+                        Usuń
                       </Button>
                     </div>
                   </Card.Body>
@@ -491,7 +490,7 @@ const Pets = () => {
                   }}
                   type="text"
                   className="form-control"
-                  placeholder="Enter the animal's name"
+                  placeholder="Podaj imię zwierzaka"
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 ></input>
@@ -504,7 +503,7 @@ const Pets = () => {
                   min={0}
                   max={1000}
                   className="form-control"
-                  placeholder="Enter the animal's weight"
+                  placeholder="Podaj wagę zwierzaka"
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 ></input>
@@ -517,7 +516,7 @@ const Pets = () => {
                   min={0}
                   max={1000}
                   className="form-control"
-                  placeholder="Enter the animal's age"
+                  placeholder="Podaj wiek zwierzaka"
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 ></input>
@@ -547,7 +546,7 @@ const Pets = () => {
                 </Dropdown>
 
                 <Form.Text className="text-muted">
-                  Select an animal type.
+                  Wybierz rasę zwierzaka.
                 </Form.Text>
               </Form.Group>
 
@@ -562,19 +561,19 @@ const Pets = () => {
                       gender.toLowerCase().slice(1)}
                   </Dropdown.Toggle>
                   <Dropdown.Menu style={{ width: "100%" }}>
-                    <Dropdown.Item eventKey="FEMALE">Female</Dropdown.Item>
-                    <Dropdown.Item eventKey="MALE">Male</Dropdown.Item>
+                    <Dropdown.Item eventKey="SAMICA">Samica</Dropdown.Item>
+                    <Dropdown.Item eventKey="SAMIEC">Samiec</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
 
                 <Form.Text className="text-muted">
-                  Select an animal gender.
+                  Wybierz płeć zwierzaka.
                 </Form.Text>
               </Form.Group>
 
               <br></br>
               <Form.Text className="text-muted">
-                Choose a picture of an animal
+                Wybierz zdjęcie zwierzaka
                 <BiLinkAlt
                   id="clip"
                   style={{ width: "25px", height: "25px", cursor: "pointer" }}
@@ -587,7 +586,7 @@ const Pets = () => {
                 onClick={() => handleAnimalCreation()}
                 style={{ float: "right" }}
               >
-                Create
+                Dodaj
               </Button>
             </Form>
           </div>

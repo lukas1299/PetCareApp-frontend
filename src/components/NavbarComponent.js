@@ -20,13 +20,13 @@ const NavbarComponent = (props) => {
           />
           <Navbar.Brand href="/home">Pet care</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="/home">Home</Nav.Link>
-            <Nav.Link href="/pets">Pets</Nav.Link>
+            <Nav.Link href="/home">Strona główna</Nav.Link>
+            <Nav.Link href="/pets">Zwierzęta</Nav.Link>
             <Nav.Link href="/forum">Forum</Nav.Link>
-            <Nav.Link href="/collections">Collections</Nav.Link>
-            <Nav.Link href="/quizzes">Quizzes</Nav.Link>
-            <Nav.Link href="/news">News</Nav.Link>
-            <Nav.Link href="/competitions">Gallery and Competitions</Nav.Link>
+            <Nav.Link href="/collections">Zbiórki</Nav.Link>
+            <Nav.Link href="/quizzes">Quizy</Nav.Link>
+            <Nav.Link href="/news">Nowości</Nav.Link>
+            <Nav.Link href="/competitions">Galeria i konkursy</Nav.Link>
           </Nav>
           <Nav>
             <Nav.Link href="/myPanel">

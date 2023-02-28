@@ -47,7 +47,7 @@ const CompetitionDetails = () => {
       (error) => {
         console.log(error);
         if(error.response.status === 409){
-            toast.error("You have already chosen your candidate");
+            toast.error("Wybrałeś już swojego kandydata.");
         }
         
       }
@@ -105,9 +105,9 @@ const CompetitionDetails = () => {
                   clear: "both",
                 }}
               >
-                Competitions
+                Konturs
               </a>
-              <h5>Which photo do you like the most?</h5>
+              <h5>Które zdjęcie najbardziej Ci się podoba?</h5>
             </div>
 
             <br></br>
@@ -147,7 +147,7 @@ const CompetitionDetails = () => {
                           </a>
                         </Card.Text>
                         <Card.Text>
-                          <a>Collected votes:</a>
+                          <a>Zebrane głosy:</a>
                         </Card.Text>
                         <Card.Text>
                           <a>

@@ -12,14 +12,11 @@ const NewsDetails = () => {
   const { newsPhoto } = state;
   const { newsDate } = state;
 
-  console.log(paragraphs);
-
   var binaryData = [];
 
   const loadAvatar = () => {
     navbarService.getUserImage().then(
       (response) => {
-        console.log(response.data);
         setImage(response.data);
       },
       (error) => {

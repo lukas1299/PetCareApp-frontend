@@ -21,9 +21,9 @@ const Friends = () => {
   const [searchResult, setSearchResult] = useState();
   const navigate = useNavigate();
 
-  const inviteCurrentExistNotify = () => toast.error("Invitation is currently exist");
-  const inviteSentSuccessfully = () => toast.success("Invitation sent successfully");
-  const friendsNotFoundNotify = () => toast.error("Friend not found.");
+  const inviteCurrentExistNotify = () => toast.error("Zaproszenie jest obecnie dostępne.");
+  const inviteSentSuccessfully = () => toast.success("Zaproszenie wysłane pomyślnie.");
+  const friendsNotFoundNotify = () => toast.error("Nie znaleziono osoby o podanej nazwie.");
 
   var binaryData = [];
 
@@ -191,12 +191,12 @@ const Friends = () => {
                   <Card.Title></Card.Title>
                   <Card.Text>
                     <a style={{ fontSize: "14px" }}>
-                      Name: <strong>{people.username}</strong>
+                      Imię: <strong>{people.username}</strong>
                     </a>
 
                     <br></br>
                     <a style={{ fontSize: "14px" }}>
-                      Email: <strong>{people.email}</strong>
+                      E-mail: <strong>{people.email}</strong>
                     </a>
                   </Card.Text>
                 </Card.Body>
@@ -270,7 +270,7 @@ const Friends = () => {
 
               <Form.Control
                 type="text"
-                placeholder="Search..."
+                placeholder="Szukaj..."
                 style={{
                   float: "left",
                   width: "40%",
@@ -303,7 +303,7 @@ const Friends = () => {
                 marginLeft: "5%",
               }}
             >
-              Invitations
+              Zaproszenia
             </h5>
             <div
               style={{
@@ -330,7 +330,6 @@ const Friends = () => {
                       margin: "1%",
                     }}
                     key={index}
-                   
                   >
                     <Card.Img
                       variant="top"
@@ -343,10 +342,10 @@ const Friends = () => {
                     <Card.Body>
                       <Card.Title></Card.Title>
                       <Card.Text>
-                        <a>Name: </a>
+                        <a>Imię: </a>
                         <strong>{invitation.profile.user.username}</strong>
                         <br></br>
-                        <a>Email: </a>
+                        <a>E-mail: </a>
                         <strong>{invitation.profile.user.email}</strong>
                       </Card.Text>
                       <div
@@ -361,14 +360,14 @@ const Friends = () => {
                           variant="success"
                           onClick={() => acceptInvitation(invitation.id)}
                         >
-                          Accept
+                          Akceptuj
                         </Button>
                         <Button
                           style={{ width: "50%", marginLeft: "5%" }}
                           variant="danger"
                           onClick={() => rejectInvitation(invitation.id)}
                         >
-                          Reject
+                          Odrzuć
                         </Button>
                       </div>
                     </Card.Body>
@@ -385,7 +384,7 @@ const Friends = () => {
                   marginLeft: "5%",
                 }}
               >
-                Friends
+                Znajomi
               </h5>
               <div
                 style={{
@@ -412,7 +411,6 @@ const Friends = () => {
                         position: "revert",
                         margin: "1%",
                       }}
-                      
                     >
                       <Card.Img
                         variant="top"
@@ -437,7 +435,7 @@ const Friends = () => {
                           variant="light"
                           onClick={() => removeFriend(people.id)}
                         >
-                          Remove
+                          Usuń znajomego
                         </Button>
                       </Card.Body>
                     </Card>
@@ -453,7 +451,7 @@ const Friends = () => {
                   marginLeft: "5%",
                 }}
               >
-                Other people
+                Osoby które możesz znać
               </h5>
               <div
                 style={{
@@ -469,8 +467,6 @@ const Friends = () => {
 
               <div style={{ marginLeft: "4%" }}>
                 {nonFrinds.map((people, index) => {
-                  console.log(people);
-
                   return (
                     <Card
                       style={{
@@ -493,12 +489,12 @@ const Friends = () => {
                         <Card.Title></Card.Title>
                         <Card.Text>
                           <a style={{ fontSize: "14px" }}>
-                            Name: <strong>{people.username}</strong>
+                            Imię: <strong>{people.username}</strong>
                           </a>
 
                           <br></br>
                           <a style={{ fontSize: "14px" }}>
-                            Email: <strong>{people.email}</strong>
+                            E-mail: <strong>{people.email}</strong>
                           </a>
                         </Card.Text>
                         <Button
@@ -506,7 +502,7 @@ const Friends = () => {
                           variant="light"
                           onClick={() => sendInvitation(people.username)}
                         >
-                          Invite
+                          Zaproś
                         </Button>
                       </Card.Body>
                     </Card>

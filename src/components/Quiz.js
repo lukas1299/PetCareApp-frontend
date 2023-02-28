@@ -138,7 +138,7 @@ const Quiz = () => {
             <a
               style={{ fontWeight: "bold", fontSize: "70px", marginLeft: "5%" }}
             >
-              Quizzes
+              Rozwiąż quiz
             </a>
             <br></br>
             <br></br>
@@ -255,7 +255,7 @@ const Quiz = () => {
               }}
               onClick={() => handleQuizFinish()}
             >
-              <a>Finish</a>
+              <a>Zakończ</a>
             </div>
             <br />
           </div>

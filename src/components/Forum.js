@@ -34,12 +34,15 @@ const Forum = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  var topicCategory = "GENERAL";
+  var topicCategory = "OGÓLNY";
 
-  const topicNotFoundNotify = () => toast.error("Topic not found.");
+  const topicNotFoundNotify = () => toast.error("Nie znaleziono tematu.");
+
+  const [cat, setCat] = useState("OGÓLNY");
 
   const handleTopicCategory = (selectedCategory) => {
     topicCategory = selectedCategory;
+    setCat(topicCategory);
     document.getElementById("topicCategoryToggle").textContent =
       selectedCategory.toLowerCase().charAt(0).toUpperCase() +
       selectedCategory.toLowerCase().slice(1);
@@ -58,9 +61,9 @@ const Forum = () => {
   };
 
   const handleTopicCreation = async (e) => {
-    if (validateTitle(title) && validateDescription(description)) {
+    if (validateTitle(title) && validateDescription(cat)) {
       try {
-        await forumService.createTopic(title, description, topicCategory).then(
+        await forumService.createTopic(title, description, cat).then(
           () => {
             handleClose();
             getAllTopics();
@@ -94,11 +97,11 @@ const Forum = () => {
 
   function validateTitle(title) {
     if (title.length === 0) {
-      setTitleError("The title cannot be empty.");
+      setTitleError("Tytuł nie może być pusty.");
       return false;
     }
     if (title.length < 1 || title.length > 70) {
-      setTitleError("Inappropriate length.");
+      setTitleError("Nieodpowiednia długość.");
       return false;
     }
     setTitleError(null);
@@ -107,11 +110,11 @@ const Forum = () => {
 
   function validateDescription(description) {
     if (description.length === 0) {
-      setDescriptionError("The description cannot be empty.");
+      setDescriptionError("Opis nie może być pusty.");
       return false;
     }
     if (title.length < 1 || title.length > 512) {
-      setDescriptionError("Inappropriate length.");
+      setDescriptionError("Nieodpowiednia długość.");
       return false;
     }
     setDescriptionError(null);
@@ -276,7 +279,7 @@ const Forum = () => {
 
               <Form.Control
                 type="text"
-                placeholder="Search..."
+                placeholder="Szukaj..."
                 style={{
                   float: "left",
                   width: "60%",
@@ -344,7 +347,7 @@ const Forum = () => {
                     ></img>
                     <a style={{ marginLeft: "2%" }}>{topic.username}</a>
                     <a style={{ fontSize: "12px", marginLeft: "67%" }}>
-                      <a>Creation date: </a>{topic.topic.creationDate}
+                      <a>Data utworzenia: </a>{topic.topic.creationDate}
                     </a>
                   </div>
                   <div style={{ textAlign: "center" }}>
@@ -413,7 +416,7 @@ const Forum = () => {
               onChange={(e) => setTitle(e.target.value)}
               type="text"
               className="form-control"
-              placeholder="Title"
+              placeholder="Tytuł wątku"
               aria-label="Username"
               aria-describedby="basic-addon1"
             ></input>
@@ -431,14 +434,14 @@ const Forum = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu style={{ width: "100%" }}>
-              <Dropdown.Item eventKey="GENERAL">General</Dropdown.Item>
-              <Dropdown.Item eventKey="HEALTH">Health</Dropdown.Item>
-              <Dropdown.Item eventKey="FOOD">Food</Dropdown.Item>
-              <Dropdown.Item eventKey="ACCESSORIES">Accessories</Dropdown.Item>
-              <Dropdown.Item eventKey="DISEASES">Diseases</Dropdown.Item>
+              <Dropdown.Item eventKey="OGÓLNY">Ogólny</Dropdown.Item>
+              <Dropdown.Item eventKey="ZDROWIE">Zdrowie</Dropdown.Item>
+              <Dropdown.Item eventKey="JEDZENIE">Jedzenie</Dropdown.Item>
+              <Dropdown.Item eventKey="AKCESORIA">Akcesoria</Dropdown.Item>
+              <Dropdown.Item eventKey="CHOROBY">Choroby</Dropdown.Item>
             </Dropdown.Menu>
             <Form.Text className="text-muted">
-              Select an topic category.
+              Wybierz kategorię tematu.
             </Form.Text>
           </Dropdown>
 
@@ -446,7 +449,7 @@ const Forum = () => {
           <div className="input-group">
             <textarea
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe your problem..."
+              placeholder="Opisz swój problem..."
               className="form-control"
               aria-label="With textarea"
             ></textarea>
@@ -458,7 +461,7 @@ const Forum = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="success" onClick={(e) => handleTopicCreation()}>
-            Create
+            Dodaj
           </Button>
         </Modal.Footer>
       </Modal>

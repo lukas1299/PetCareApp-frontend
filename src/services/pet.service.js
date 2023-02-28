@@ -56,14 +56,10 @@ const updateAnimal = (id, name, animalType, age, weight, gender, animalImage) =>
       json:
         '{ "name":"' +
         name +
-        '", "breed":"' +
-        animalType +
         '", "age":"' +
         age +
         '", "weight":"' +
         weight +
-        '", "gender":"' +
-        gender +
         '"}',
       file: animalImage,
     },

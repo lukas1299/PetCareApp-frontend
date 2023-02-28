@@ -81,10 +81,10 @@ const PayRealization = () => {
   const handlePayClick = async () => {
     if (blikCode.length < 6) {
       setAlertVariant("danger");
-      setBlikCodeError("Invalid code");
+      setBlikCodeError("Nieprawidłowy kod");
     } else {
       if (alertVariant !== "success") {
-        setBlikCodeError("Success!");
+        setBlikCodeError("Sukces!");
         setAlertVariant("success");
         await delay(3000);
         handleDonateRealization();
@@ -100,10 +100,10 @@ const PayRealization = () => {
       expiry.length < 4 ||
       cvc.length < 3
     ) {
-      setCardDateError("Incorrect card details");
+      setCardDateError("Nieprawidłowe dane karty.");
     } else {
       if (codeDateAlertVariant !== "success") {
-        setCardDateError("Success!");
+        setCardDateError("Sukces!");
         setCodeDateAlertVariant("success");
         await delay(3000);
         handleDonateRealization();
@@ -154,7 +154,7 @@ const PayRealization = () => {
           <div
             style={{ display: "flex", marginLeft: "10%", marginTop: "10px" }}
           >
-            <a>Description:</a>
+            <a>Opis:</a>
             <h5 style={{ marginLeft: "10px" }}>
               {location.state.collection.description}
             </h5>
@@ -172,7 +172,7 @@ const PayRealization = () => {
             }}
           ></div>
           <div style={{ display: "flex", marginLeft: "10%" }}>
-            <a>Total:</a>
+            <a>Kwota:</a>
             <h5 style={{ marginLeft: "10px" }}>{location.state.money}$</h5>
           </div>
 
@@ -192,7 +192,7 @@ const PayRealization = () => {
           style={{ width: "60%", height: "100%", backgroundColor: "lightGray" }}
         >
           <h5 style={{ marginTop: "15px", marginLeft: "40px" }}>
-            <BiCoin /> Payment
+            <BiCoin /> Płatność
           </h5>
           <div
             style={{
@@ -274,7 +274,7 @@ const PayRealization = () => {
                     onInput={(e) =>
                       (e.target.value = e.target.value.slice(0, 16))
                     }
-                    placeholder="Card Number"
+                    placeholder="Numer karty"
                     className="form-control"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
@@ -284,7 +284,7 @@ const PayRealization = () => {
                     onChange={(e) => handleInputChange(e.target.value)}
                     onFocus={() => handleInputFocus("name")}
                     type="tel"
-                    placeholder="Username"
+                    placeholder="Imię i nazwisko"
                     className="form-control"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
@@ -297,7 +297,7 @@ const PayRealization = () => {
                     onInput={(e) =>
                       (e.target.value = e.target.value.slice(0, 4))
                     }
-                    placeholder="Expirity"
+                    placeholder="Czas wygaśnięcia"
                     className="form-control"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
@@ -344,7 +344,7 @@ const PayRealization = () => {
                   }}
                   onClick={() => handleCardSubmitClick()}
                 >
-                  <a>Submit</a>
+                  <a>Zrealizuj</a>
                 </div>
               </div>
             </div>
@@ -380,9 +380,9 @@ const PayRealization = () => {
                   marginTop: "35px",
                 }}
               >
-                <h6>Enter BLIK code</h6>
+                <h6>Podaj kod BLIK</h6>
                 <a style={{ fontSize: "12px" }}>
-                  generate in your bank application
+                  wygenerowany w swojej aplikacji bankowej
                 </a>
               </div>
               <input
@@ -395,7 +395,7 @@ const PayRealization = () => {
                 onChange={(e) => handleBlikCode(e.target.value)}
                 type="number"
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 6))}
-                placeholder="6 digit code"
+                placeholder="6-cyfrowy kod"
                 className="form-control"
                 aria-describedby="basic-addon1"
               ></input>
@@ -429,7 +429,7 @@ const PayRealization = () => {
                 }}
                 onClick={() => handlePayClick()}
               >
-                <a>Pay</a>
+                <a>Zapłać</a>
               </div>
             </div>
           ) : (
