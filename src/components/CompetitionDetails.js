@@ -105,7 +105,7 @@ const CompetitionDetails = () => {
                   clear: "both",
                 }}
               >
-                Konturs
+                Konkurs
               </a>
               <h5>Które zdjęcie najbardziej Ci się podoba?</h5>
             </div>

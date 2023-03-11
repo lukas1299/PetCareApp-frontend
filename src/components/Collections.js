@@ -21,6 +21,10 @@ import Alert from "react-bootstrap/Alert";
 import { ToastContainer, toast } from "react-toastify";
 import piggyBank from "./photos/piggyBank.png";
 
+import photo1 from "./photos/gallery_photo/dogc1.png";
+import photo2 from "./photos/gallery_photo/dogc2.png";
+import photo3 from "./photos/gallery_photo/dogc3.png";
+
 const Collections = () => {
   const navigate = useNavigate();
 
@@ -105,7 +109,8 @@ const Collections = () => {
     );
   };
 
-  const collectionNotFoundNotify = () => toast.error("Nie znaleziono kolekcji.");
+  const collectionNotFoundNotify = () =>
+    toast.error("Nie znaleziono kolekcji.");
   const collectionSharedSuccessfullyNotify = () =>
     toast.success("Kolekcja została udostępniona pomyślnie.");
 
@@ -344,7 +349,7 @@ const Collections = () => {
                 </div>
               );
             } else {
-                return (
+              return (
                 <div style={{ marginLeft: "4%" }}>
                   <Card
                     key={index}
@@ -435,6 +440,54 @@ const Collections = () => {
             position: "initial",
           }}
         >
+          <div
+            style={{ width: "80%", marginLeft: "auto", marginRight: "auto", display:"flex", marginBottom:"40px" }}
+          >
+            <img
+              src={photo1}
+              style={{
+                width: "60%",
+                boxShadow:
+                  " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+                borderRadius:"20px"
+              }}
+            ></img>
+            <h4 style={{marginTop:"250px", marginLeft:"30px"}}>Pomóżmy bezdomnym psom! Przekaż darowiznę już dziś!</h4>
+          </div>
+          <div
+            style={{ width: "80%", marginLeft: "auto", marginRight: "auto", display:"flex", marginBottom:"40px" }}
+          >
+            <h4 style={{marginTop:"250px", marginLeft:"30px"}}>Twoja pomoc może uratować życie psa! Wesprzyj naszą zbiórkę!</h4>
+            <img
+              src={photo2}
+              style={{
+                width: "60%",
+                boxShadow:
+                  " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+                borderRadius:"20px"
+              }}
+            ></img>
+            
+          </div>
+          <div
+            style={{ width: "80%", marginLeft: "auto", marginRight: "auto", display:"flex", marginBottom:"40px"}}
+          >
+            <img
+              src={photo3}
+              style={{
+                width: "60%",
+                boxShadow:
+                  " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+                borderRadius:"20px"
+              }}
+            ></img>
+            <h4 style={{marginTop:"250px", marginLeft:"30px"}}>Nie zostawiaj psów samych! Wspieraj organizacje działające na rzecz zwierząt!</h4>
+          </div>
+          <a style={{ fontWeight: "bold", fontSize: "70px", marginLeft: "5%", marginBottom:"40px" }}>
+            Dostępne zbiórki
+          </a>
+          <br/>
+          <br/>
           <div
             style={{
               backgroundColor: "#e1e5eb",

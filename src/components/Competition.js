@@ -269,7 +269,7 @@ const Competition = () => {
                     marginRight: "auto",
                   }}
                 >
-                  Nasi zwycięzcy
+                  Zwycięzcy
                 </a>
                 <h5>Oto zwyciezcy naszych konkursów</h5>
               </div>

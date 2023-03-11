@@ -15,6 +15,12 @@ import Form from "react-bootstrap/Form";
 import navbarService from "./navbar.service";
 import Alert from "react-bootstrap/Alert";
 import { ToastContainer, toast } from "react-toastify";
+import headdog from "./photos/gallery_photo/headdog.png";
+
+import dogf1 from "./photos/gallery_photo/dogf1.png";
+import dogf2 from "./photos/gallery_photo/dogf2.png";
+import dogf3 from "./photos/gallery_photo/dogf3.png";
+import dogf4 from "./photos/gallery_photo/dogf4.png";
 
 const Forum = () => {
   const [show, setShow] = useState(false);
@@ -52,7 +58,6 @@ const Forum = () => {
     forumService.getAllTopics().then(
       (response) => {
         setTopics(response.data);
- 
       },
       (error) => {
         console.log(error);
@@ -253,6 +258,172 @@ const Forum = () => {
         >
           <div
             style={{
+              width: "100%",
+              height: "400px",
+              backgroundColor: "#e1e5eb",
+              marginBottom: "40px",
+              display: "flex",
+            }}
+          >
+            <a
+              style={{
+                fontWeight: "bold",
+                fontSize: "60px",
+                marginLeft: "5%",
+                marginTop: "70px",
+              }}
+            >
+              Poznajmy się i dzielmy doświadczeniami o naszych psiakach!
+            </a>
+            <img src={headdog}></img>
+          </div>
+          <br></br>
+          <a style={{ fontWeight: "bold", fontSize: "70px", marginLeft: "5%" }}>
+            Pomocne wskazówki
+          </a>
+          <div
+            style={{
+              width: "100%",
+              height: "auto",
+              backgroundColor: "#125137",
+            }}
+          >
+            <div style={{ display: "flex" }}>
+              <img
+                src={dogf1}
+                style={{
+                  width: "40%",
+                  margin: "40px",
+                  borderRadius: "15px",
+                  boxShadow:
+                    " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+                }}
+              ></img>
+              <div
+                style={{
+                  textAlign: "center",
+                  marginTop: "200px",
+                  width: "50%",
+                }}
+              >
+                <a
+                  style={{
+                    fontSize: "25px",
+                    fontWeight: "bold",
+                    color: "#7ECE68",
+                  }}
+                >
+                  W przypadku problemów z zachowaniem najlepiej jest zwrócić się
+                  o pomoc do behawiorysty, który może pomóc zidentyfikować
+                  przyczynę problemu i zaproponować odpowiedni trening.
+                </a>
+              </div>
+            </div>
+            <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  textAlign: "center",
+                  marginTop: "200px",
+                  width: "50%",
+                  marginLeft: "3%",
+                }}
+              >
+                <a
+                  style={{
+                    fontSize: "25px",
+                    fontWeight: "bold",
+                    color: "#7ECE68",
+                  }}
+                >
+                  Najlepiej dbać o regularne wizyty u weterynarza i stosować się
+                  do zaleceń lekarza weterynarii w zakresie opieki nad psem. W
+                  przypadku problemów zdrowotnych należy natychmiast
+                  skonsultować się z weterynarzem.
+                </a>
+              </div>
+              <img
+                src={dogf2}
+                style={{
+                  width: "40%",
+                  margin: "40px",
+                  borderRadius: "15px",
+                  boxShadow:
+                    " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+                }}
+              ></img>
+            </div>
+            <div style={{ display: "flex" }}>
+              <img
+                src={dogf3}
+                style={{
+                  width: "40%",
+                  margin: "40px",
+                  borderRadius: "15px",
+                  boxShadow:
+                    " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+                }}
+              ></img>
+              <div
+                style={{
+                  textAlign: "center",
+                  marginTop: "200px",
+                  width: "50%",
+                }}
+              >
+                <a
+                  style={{
+                    fontSize: "25px",
+                    fontWeight: "bold",
+                    color: "#7ECE68",
+                  }}
+                >
+                  Najlepiej stosować się do zaleceń dotyczących diety dla danej
+                  rasy psa oraz pilnować, aby pies miał regularne posiłki o
+                  stałych porach. Dobrym rozwiązaniem może być także karmienie
+                  psem wysokiej jakości karmą suchą lub mokrą.
+                </a>
+              </div>
+            </div>
+            <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  textAlign: "center",
+                  marginTop: "200px",
+                  width: "50%",
+                  marginLeft: "3%",
+                }}
+              >
+                <a
+                  style={{
+                    fontSize: "25px",
+                    fontWeight: "bold",
+                    color: "#7ECE68",
+                  }}
+                >
+                  Najważniejsze jest zapewnienie psu odpowiedniej ilości ruchu i aktywności fizycznej. Można to osiągnąć poprzez codzienne spacery, zabawę z psem, naukę nowych sztuczek, a także udział w różnego rodzaju zajęciach sportowych dla psów, takich jak agility, flyball czy trening węchowy.
+                </a>
+              </div>
+              <img
+                src={dogf4}
+                style={{
+                  width: "40%",
+                  margin: "40px",
+                  borderRadius: "15px",
+                  boxShadow:
+                    " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.30)",
+                }}
+              ></img>
+            </div>
+          </div>
+          <br></br>
+          <br></br>
+          <a style={{ fontWeight: "bold", fontSize: "70px", marginLeft: "5%" }}>
+            Chcesz o coś zapytać?
+          </a>
+          <br></br>
+          <br></br>
+          <div
+            style={{
               backgroundColor: "#e1e5eb",
               marginBottom: "30px",
               width: "80%",
@@ -347,7 +518,8 @@ const Forum = () => {
                     ></img>
                     <a style={{ marginLeft: "2%" }}>{topic.username}</a>
                     <a style={{ fontSize: "12px", marginLeft: "67%" }}>
-                      <a>Data utworzenia: </a>{topic.topic.creationDate}
+                      <a>Data utworzenia: </a>
+                      {topic.topic.creationDate}
                     </a>
                   </div>
                   <div style={{ textAlign: "center" }}>
